@@ -33,7 +33,7 @@ Columns block line of sight, so wolves must use A* to go around them. There are 
 
 ## 4. Team and phases
 
-Each unit lives in its own branch and worktree (`../worktrees/<name>`), with a disjoint edit surface. Writers and reviewers pair Claude and Codex (GPT): whoever does not write, reviews the diff against the brief, Class 14 and the Parcial 1 feedback.
+Each unit lives in its own branch and worktree (`C:/Users/tobia/Dev/parcial-ia-2-worktrees/<name>`), with a disjoint edit surface. Writers and reviewers pair Claude and Codex (GPT): whoever does not write, reviews the diff against the brief, Class 14 and the Parcial 1 feedback.
 
 | Phase | Unit | Branch | Writer | Reviewer |
 |---|---|---|---|---|
