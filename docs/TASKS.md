@@ -30,14 +30,14 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 |---|---|---|---|---|---|---|---|
 | T0 | S15, S16 | Setup: layers, asmdefs, shared contracts (FSM, zones, graph data, context, patrol route), docs | Claude / — | `chore/setup` | main checkout | done | 549d5f7 + docs commit |
 | T0b | S15 | Migrate project to Unity 6000.3.17f1 (needs Unity closed) | Claude / — | `chore/setup` | main checkout | pending | |
-| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex / Claude Sonnet | `feat/level-variant-c` | `../worktrees/level-variant-c` | pending | |
-| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex / Claude Sonnet | `feat/boids-port` | `../worktrees/boids-port` | pending | |
-| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `../worktrees/graph-astar` | pending | |
-| T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | `../worktrees/perception-fsm` | pending | |
-| T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus / Codex | `feat/hunter` | `../worktrees/hunter` | pending | |
-| T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Codex / Claude Sonnet | `feat/wolves` | `../worktrees/wolves` | pending | |
-| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex / Claude | `feat/feedback-integration` | `../worktrees/feedback-integration` | pending | |
-| T8 | S15 | README, PDF draft, rubric checklist, final cross-audit | Claude / Codex | `docs/delivery` | `../worktrees/delivery` | pending | |
+| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex / Claude Sonnet | `feat/level-variant-c` | `.worktree/level-variant-c` | pending | |
+| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex / Claude Sonnet | `feat/boids-port` | `.worktree/boids-port` | pending | |
+| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` | pending | |
+| T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | `.worktree/perception-fsm` | pending | |
+| T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus / Codex | `feat/hunter` | `.worktree/hunter` | pending | |
+| T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Codex / Claude Sonnet | `feat/wolves` | `.worktree/wolves` | pending | |
+| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex / Claude | `feat/feedback-integration` | `.worktree/feedback-integration` | pending | |
+| T8 | S15 | README, PDF draft, rubric checklist, final cross-audit | Claude / Codex | `docs/delivery` | `.worktree/delivery` | pending | |
 
 ## Log
 
