@@ -18,7 +18,7 @@ Unity **6000.3.17f1** (mandatory). Public repo: `github.com/Akykes25/Parcial-IA-
 |---|---|
 | `FSM/` | `State`, `StateMachine<TKey>`: generic, agent-agnostic. Transitions are conditions registered on the machine; "any" transitions are evaluated first in priority order. Used by **both** Hunter and Wolves. |
 | `Core/` | `SimulationContext` (scene singleton: graph, zones), `ZoneVolume` + `ZoneType` (trigger, colored floor, gizmo), `GameLayers` |
-| `Navigation/` | `GraphNode`, `NavigationGraph`, `AStarPathfinder` (min-heap open set, gScore/cameFrom, fixed Euclidean heuristic, node filter to exclude safe-zone nodes for wolves, returns path cost), `PathFollower` (steering along the path, direct steering when target is visible) |
+| `Navigation/` | `GraphNode`, `NavigationGraph`, `AStarPathfinder` (min-heap open set, gScore/cameFrom, no heuristic method (small map: ordered by accumulated cost), node filter to exclude safe-zone nodes for wolves, returns path cost), `PathFollower` (steering along the path, direct steering when target is visible) |
 | `Perception/` | `PhysicsSensorBuffer` (reused, layer mask), `VisionSensor` (range, optional angle, LOS raycast only against candidates, scheduled scans) |
 | `Steering/` | `SteeringBehaviours` (Seek, Arrive, Pursuit with prediction, Evade) |
 | `Boids/` | Parcial 1 boids split into agent / flocking / motor; bounded to the hunting ground |

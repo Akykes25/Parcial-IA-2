@@ -7,13 +7,14 @@ namespace Parcial2.Navigation
     /// <summary>
     /// A* over a <see cref="NavigationGraph"/>. One instance owns its work buffers and can be reused
     /// across searches. Wolves and the Hunter share this implementation.
+    /// No heuristic is used: the map is small, so the open set is ordered by accumulated cost only.
     /// </summary>
     public class AStarPathfinder
     {
         private struct OpenEntry
         {
             public GraphNode Node;
-            public float F;
+            public float Cost;
         }
 
         private readonly List<OpenEntry> open = new();
@@ -50,7 +51,7 @@ namespace Parcial2.Navigation
             cameFrom.Clear();
 
             gScore[start] = 0f;
-            Push(start, Heuristic(start, goal));
+            Push(start, 0f);
 
             while (open.Count > 0)
             {
@@ -58,7 +59,7 @@ namespace Parcial2.Navigation
                 float currentG = gScore[current.Node];
 
                 // A cheaper route to this node was found after this entry was queued.
-                if (current.F > currentG + Heuristic(current.Node, goal) + 0.0001f)
+                if (current.Cost > currentG)
                     continue;
 
                 if (current.Node == goal)
@@ -68,13 +69,13 @@ namespace Parcial2.Navigation
                     return true;
                 }
 
-                Expand(current.Node, currentG, goal, filter);
+                Expand(current.Node, currentG, filter);
             }
 
             return false;
         }
 
-        private void Expand(GraphNode node, float nodeG, GraphNode goal, Predicate<GraphNode> filter)
+        private void Expand(GraphNode node, float nodeG, Predicate<GraphNode> filter)
         {
             foreach (GraphNode neighbor in node.Neighbors)
             {
@@ -87,7 +88,7 @@ namespace Parcial2.Navigation
 
                 gScore[neighbor] = tentative;
                 cameFrom[neighbor] = node;
-                Push(neighbor, tentative + Heuristic(neighbor, goal));
+                Push(neighbor, tentative);
             }
         }
 
@@ -104,16 +105,14 @@ namespace Parcial2.Navigation
             result.Reverse();
         }
 
-        private static float Heuristic(GraphNode a, GraphNode b) => Vector3.Distance(a.Position, b.Position);
-
-        private void Push(GraphNode node, float f)
+        private void Push(GraphNode node, float cost)
         {
-            open.Add(new OpenEntry { Node = node, F = f });
+            open.Add(new OpenEntry { Node = node, Cost = cost });
             int child = open.Count - 1;
             while (child > 0)
             {
                 int parent = (child - 1) / 2;
-                if (open[parent].F <= open[child].F)
+                if (open[parent].Cost <= open[child].Cost)
                     break;
 
                 (open[parent], open[child]) = (open[child], open[parent]);
@@ -135,9 +134,9 @@ namespace Parcial2.Navigation
                 int right = left + 1;
                 int smallest = parent;
 
-                if (left < open.Count && open[left].F < open[smallest].F)
+                if (left < open.Count && open[left].Cost < open[smallest].Cost)
                     smallest = left;
-                if (right < open.Count && open[right].F < open[smallest].F)
+                if (right < open.Count && open[right].Cost < open[smallest].Cost)
                     smallest = right;
                 if (smallest == parent)
                     break;
