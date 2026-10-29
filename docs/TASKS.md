@@ -1,11 +1,11 @@
 # Parcial 2 — Task list
 
 Objective: deliver Parcial 2 (perception, graph, A*, wolves) on top of Parcial 1 for a perfect grade. Integration branch: `main` (local merges).
-Delivery strategy: one branch + worktree per unit, merged per phase. Test runner: Unity Test Framework (EditMode), Unity 6000.3.17f1.
+Delivery strategy: use the existing main checkout for local Unity implementation; branch/worktree separation is reserved for later GitHub publishing. Test runner: Unity Test Framework (EditMode), Unity 6000.3.22f1.
 
 ## Specs
 
-Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim.
+Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) and the teacher notes (`Material/Cosas a tener en cuenta para el parcial.md`) are verbatim.
 
 - **S1 Zones** — "Zona inicial", "Coto de caza", "Zonas seguras: como mínimo 2 áreas del mapa hacia las que el Cazador puede huir", "Salida". "Las zonas deberán poder identificarse visualmente durante la ejecución". Map: Variant C.
 - **S2 Boids** — "Deberá existir un mínimo de 6 Boids. Los Boids deberán permanecer exclusivamente dentro del Coto de caza". "Los Boids deberán conservar los criterios del Parcial 1."
@@ -21,23 +21,29 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 - **S12 Alert** — "La posición transmitida mediante la alerta representa la última posición conocida del Cazador".
 - **S13 Integration** — "Boids → Cazador → Lobos"; Parcial 1 systems stay functional.
 - **S14 Feedback** — wolf detection, alert emitted/received, known position, A* path, hunter state + gathers, hunter detects wolf + chosen safe zone; gizmos for boid radii, hunter radii, wolf FOV.
-- **S15 Delivery** — PDF "Apellido Nombre Parcial #.pdf" with names and repo link; "versión 6000.3.17f1"; public GitHub.
+- **S15 Delivery** — PDF "Apellido Nombre Parcial #.pdf" with names and repo link; "versión 6000.3.22f1"; public GitHub.
 - **S16 Quality (Class 14 + Parcial 1 feedback)** — reusable FSM; no god scripts; no `Find*`; no scene references in agents; no static wolf list; unsubscribe events; no repeated physics queries; English only; no `visited` list.
+- **S17 A\* rules (teacher)** — "VISITED NO DEBERIA ESTAR". "NO USAREMOS HEURISTICMETHOD COMO LO TIENE EL. LA UNICA JUSTIFICACION ES CUANDO EL MAPA ES DEMASIADO GRANDE, SINO NO". "EN CASO DE UN MAPA GRANDE, USAR MAS DE UN GRAFO". "USAR ASTAR PARA MOVERSE".
+- **S18 LOS before pathfinding (teacher)** — "SI EL TARGET ESTA EN LA MISMA LINEA DE VISION NO HACE FALTA HACER UN PATFINDING COMPLEJO, SOLAMENTE USAR EL PATFINDING CUANDO NO ESTOY VIENDO AL OBJETIVO". "MOVIMIENTO DEL PATHFINDING HACERLO CON LOS STEERING BEHAVIOURS".
+- **S19 No waypoints-and-grid navigation (teacher)** — "NO USAR WAYPOINTS Y LA GRILLA". "OBVIAMENTE NO USAR NAVMESH". Assumption (to confirm with the teacher): the brief still requires waypoint patrol (1.8), so patrol waypoints are graph nodes reached through S18; the graph is not a uniform grid.
+- **S20 Optimization (teacher)** — "HAY QUE PRESTAR MUCHA ATENCION EN LA OPTIMIZACION". Budget in `PLAN.md` section 5.
+- **S21 Wolf coordination (teacher)** — "PARA LOS LOBOS LO RECOMENDABLE ES USAR UN SINGLETON, UN EVENTO ESTATICO TAMBIEN SE PUEDE USAR, PERO ES MAS RECOMENDABLE EL SINGLETON". "USAR FSM".
 
 ## Tasks
 
 | ID | Specs | Unit | Writer / Reviewer | Branch | Worktree | Status | Evidence |
 |---|---|---|---|---|---|---|---|
 | T0 | S15, S16 | Setup: layers, asmdefs, shared contracts (FSM, zones, graph data, context, patrol route), docs | Claude / — | `chore/setup` | main checkout | done | 549d5f7 + docs commit |
-| T0b | S15 | Migrate project to Unity 6000.3.17f1 (needs Unity closed) | Claude / — | `chore/setup` | main checkout | pending | |
-| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex / Claude Sonnet | `feat/level-variant-c` | `.worktree/level-variant-c` | pending | |
-| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex / Claude Sonnet | `feat/boids-port` | `.worktree/boids-port` | pending | |
-| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` | done | 18/18 EditMode tests green |
-| T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | `.worktree/perception-fsm` | pending | |
-| T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus / Codex | `feat/hunter` | `.worktree/hunter` | pending | |
-| T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Codex / Claude Sonnet | `feat/wolves` | `.worktree/wolves` | pending | |
-| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex / Claude | `feat/feedback-integration` | `.worktree/feedback-integration` | pending | |
-| T8 | S15 | README, PDF draft, rubric checklist, final cross-audit | Claude / Codex | `docs/delivery` | `.worktree/delivery` | pending | |
+| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex | `feat/level-variant-c` | `.worktree/level-variant-c` | done | e2a763a |
+| T1b | S9, S17, S19 | Audit the 45 scene nodes: no uniform grid in the hunting ground, nodes at rooms/doors/bends/columns, safe-zone nodes flagged; bake with `Tools/Bake Navigation Graph` and check no link crosses a wall | Claude / Codex | `feat/level-variant-c` | main checkout | pending | |
+| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex | `feat/boids-port` | main checkout (local; `.worktree/boids-port/Scripts/` is reference) | in progress | Six scene Boids; EditMode 1/1; runtime proof pending |
+| T3 | S9, S10, S4, S17 | GraphBaker, A* (no heuristic, no visited), PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` (merge into main checkout pending) | done (review pending) | 3d5c7b2, 10c8fa8; EditMode 18/18 |
+| T4 | S5, S8, S3, S20 | VisionSensor (scheduled scans, LOS only on candidates) + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | main checkout | pending | |
+| T4b | S18, S20 | `NavigationAgent`: LOS → `SteerDirect`, else A* + `PathFollower`; repath only when the target changes closest node + tests | Claude / Codex | `feat/graph-astar` | main checkout | pending | |
+| T5 | S3–S6, S18 | Hunter controller, brain, six states + tests (moves only through `NavigationAgent`) | Claude Opus / Codex | `feat/hunter` | main checkout | pending | |
+| T6 | S7, S11, S12, S18, S19, S21 | Wolves: `WolfPack` singleton with instance events, `PatrolRoute` of graph nodes, patrol/chase/investigate through `NavigationAgent` + tests | Codex / Claude Sonnet | `feat/wolves` | main checkout | pending | |
+| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex / Claude | `feat/feedback-integration` | main checkout | pending | |
+| T8 | S15, S20 | README, PDF draft, rubric + teacher-rules checklist, profiler capture, final cross-audit | Codex / Claude | `docs/delivery` | main checkout | pending | |
 
 ## Log
 
@@ -46,3 +52,8 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 - **L3 (2026-10-28)** — "usa no se, el nivel o los boids con GPT, y Opus no lo hagas mas de nivel medio". Decision: Codex writes level, boids, wolves, integration; Opus capped at medium effort.
 - **L4 (2026-10-29)** — "vas a generar un documento donde se muestre este plan y [...] un documento que enliste las tareas [...] diferentes ramas y worktrees para cada uno de estos puntos".
 - **L5 (2026-10-29)** — Setup decisions: removed `com.unity.ai.navigation` (NavMesh package) from the manifest; layers 8–12 = Obstacle, Boid, Hunter, Wolf, Interest; FSM API mirrors the class `StateMachine` (RegisterState/Update) but owns transitions.
+- **L6 (2026-10-29)** — User instruction: "Tene en cuenta algo, quiero trabajar directametne desde aca, despues cuando subamos a github lo haremos en diferentes ramas que ya estan prestablecidas, eso no importa ahora porque no puedo duplicar y hacer un proyecto de Unity por cada rama, asi que nos la vamos a tener que arreglar con eso. Quiero que trabajes con lo que tenemos por favor". Decision: local Unity work stays in the existing checkout; branch/worktree separation is deferred until GitHub publishing.
+- **L7 (2026-10-29)** — User confirmed the proposed Boids process: "Bueno dale, entonces arranca con el proceso que queres hacer." After the Unity Editor recovered, the user requested a retry: "proba ahora por favor".
+- **L8 (2026-10-29)** — "Por lo pronto hace el T3, me parece lo mas optimo para hacer en este momento". T3 written in `.worktree/graph-astar`; EditMode 18/18 green (3d5c7b2).
+- **L9 (2026-10-29)** — "En el archivo de @Material\Cosas a tener en cuenta para el parcial, menciono que no tengo que usar Heuristic method, asi que tendras que ver como hacerl para no usarlo". A* now orders the open set by accumulated cost only; EditMode 18/18 green (10c8fa8).
+- **L10 (2026-10-29)** — "¿POodes rehacer el plan teniendo en cuenta esas cosas? Porque habria que tener en cuenta todo eso". Plan rewritten around teacher rules N1–N11 (S17–S21); added T1b (graph audit) and T4b (`NavigationAgent`, LOS-first movement). Open question for the teacher: how "NO USAR WAYPOINTS Y LA GRILLA" fits the brief's waypoint patrol.
