@@ -32,7 +32,7 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 | T0b | S15 | Migrate project to Unity 6000.3.17f1 (needs Unity closed) | Claude / — | `chore/setup` | main checkout | pending | |
 | T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex / Claude Sonnet | `feat/level-variant-c` | `.worktree/level-variant-c` | pending | |
 | T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex / Claude Sonnet | `feat/boids-port` | `.worktree/boids-port` | pending | |
-| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` | pending | |
+| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` | done | 18/18 EditMode tests green |
 | T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | `.worktree/perception-fsm` | pending | |
 | T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus / Codex | `feat/hunter` | `.worktree/hunter` | pending | |
 | T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Codex / Claude Sonnet | `feat/wolves` | `.worktree/wolves` | pending | |

@@ -3,6 +3,7 @@
     "rootNamespace": "Parcial2.Tests",
     "references": [
         "Parcial2.Runtime",
+        "Parcial2.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
