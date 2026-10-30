@@ -1,7 +1,7 @@
 # Parcial 2 — Perception, Graphs and Pathfinding: Plan
 
 Goal: extend Parcial 1 (Boids + Hunter FSM) with wolves, FOV/LOS perception, a hand-built navigation graph and A*, aiming for a perfect grade.
-Unity **6000.3.17f1** (mandatory). Public repo: `github.com/Akykes25/Parcial-IA-2`.
+Unity **6000.3.22f1** (mandatory). Public repo: `github.com/Akykes25/Parcial-IA-2`.
 
 ## 1. Inputs that drive every decision
 
@@ -33,7 +33,7 @@ Columns block line of sight, so wolves must use A* to go around them. There are 
 
 ## 4. Team and phases
 
-Each unit lives in its own branch and worktree (`.worktree/<name>`), with a disjoint edit surface. Writers and reviewers pair Claude and Codex (GPT): whoever does not write, reviews the diff against the brief, Class 14 and the Parcial 1 feedback.
+Local Unity implementation uses the existing checkout. The pre-established branch/worktree-per-unit layout is reserved for later GitHub publishing, avoiding a duplicate Unity project per branch. Writers and reviewers pair Claude and Codex (GPT): whoever does not write, reviews the diff against the brief, Class 14 and the Parcial 1 feedback.
 
 | Phase | Unit | Branch | Writer | Reviewer |
 |---|---|---|---|---|

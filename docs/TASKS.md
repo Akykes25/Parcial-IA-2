@@ -1,7 +1,7 @@
 # Parcial 2 — Task list
 
 Objective: deliver Parcial 2 (perception, graph, A*, wolves) on top of Parcial 1 for a perfect grade. Integration branch: `main` (local merges).
-Delivery strategy: one branch + worktree per unit, merged per phase. Test runner: Unity Test Framework (EditMode), Unity 6000.3.17f1.
+Delivery strategy: use the existing main checkout for local Unity implementation; branch/worktree separation is reserved for later GitHub publishing. Test runner: Unity Test Framework (EditMode), Unity 6000.3.22f1.
 
 ## Specs
 
@@ -21,7 +21,7 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 - **S12 Alert** — "La posición transmitida mediante la alerta representa la última posición conocida del Cazador".
 - **S13 Integration** — "Boids → Cazador → Lobos"; Parcial 1 systems stay functional.
 - **S14 Feedback** — wolf detection, alert emitted/received, known position, A* path, hunter state + gathers, hunter detects wolf + chosen safe zone; gizmos for boid radii, hunter radii, wolf FOV.
-- **S15 Delivery** — PDF "Apellido Nombre Parcial #.pdf" with names and repo link; "versión 6000.3.17f1"; public GitHub.
+- **S15 Delivery** — PDF "Apellido Nombre Parcial #.pdf" with names and repo link; "versión 6000.3.22f1"; public GitHub.
 - **S16 Quality (Class 14 + Parcial 1 feedback)** — reusable FSM; no god scripts; no `Find*`; no scene references in agents; no static wolf list; unsubscribe events; no repeated physics queries; English only; no `visited` list.
 
 ## Tasks
@@ -29,15 +29,14 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 | ID | Specs | Unit | Writer / Reviewer | Branch | Worktree | Status | Evidence |
 |---|---|---|---|---|---|---|---|
 | T0 | S15, S16 | Setup: layers, asmdefs, shared contracts (FSM, zones, graph data, context, patrol route), docs | Claude / — | `chore/setup` | main checkout | done | 549d5f7 + docs commit |
-| T0b | S15 | Migrate project to Unity 6000.3.17f1 (needs Unity closed) | Claude / — | `chore/setup` | main checkout | pending | |
-| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex / Claude Sonnet | `feat/level-variant-c` | `.worktree/level-variant-c` | pending | |
-| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex / Claude Sonnet | `feat/boids-port` | `.worktree/boids-port` | pending | |
-| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus / Codex | `feat/graph-astar` | `.worktree/graph-astar` | pending | |
-| T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Sonnet / Codex | `feat/perception-fsm` | `.worktree/perception-fsm` | pending | |
-| T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus / Codex | `feat/hunter` | `.worktree/hunter` | pending | |
-| T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Codex / Claude Sonnet | `feat/wolves` | `.worktree/wolves` | pending | |
-| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex / Claude | `feat/feedback-integration` | `.worktree/feedback-integration` | pending | |
-| T8 | S15 | README, PDF draft, rubric checklist, final cross-audit | Claude / Codex | `docs/delivery` | `.worktree/delivery` | pending | |
+| T1 | S1, S9 | Level Variant C via `Tools/Build Parcial 2 Level` | Codex | `feat/level-variant-c` | `.worktree/level-variant-c` | done | e2a763a |
+| T2 | S2, S13 | Boids port from Parcial 1, split + optimized | Codex | `feat/boids-port` | main checkout (local; `.worktree/boids-port/Scripts/` is reference) | in progress | Six scene Boids; EditMode 1/1; runtime proof pending |
+| T3 | S9, S10, S4 | GraphBaker, A*, PathFollower + tests | Claude Opus | `feat/graph-astar` | `.worktree/graph-astar` | pending | |
+| T4 | S5, S8, S3 | VisionSensor + FSM tests | Claude Opus | `feat/perception-fsm` | main checkout (local) | done (uncommitted) | EditMode 22/22; FSM priority fix (RED→GREEN); scene smoke: 6 boids seen from hunting ground, 0 through walls from Start |
+| T5 | S3–S6 | Hunter controller, brain, six states + tests | Claude Opus | `feat/hunter` | `.worktree/hunter` | pending | |
+| T6 | S7, S11, S12 | Wolves, pack alert, patrol/chase/investigate + tests | Claude Sonnet | `feat/wolves` | `.worktree/wolves` | pending | |
+| T7 | S13, S14 | Scene integration, prefabs, HUD, gizmos | Codex | `feat/feedback-integration` | `.worktree/feedback-integration` | pending | |
+| T8 | S15 | README, PDF draft, rubric checklist, final cross-audit | Codex | `docs/delivery` | `.worktree/delivery` | pending | |
 
 ## Log
 
@@ -46,3 +45,6 @@ Quotes from the brief (`Parcial 2/Consigna/Consigna parcial 2.txt`) are verbatim
 - **L3 (2026-10-28)** — "usa no se, el nivel o los boids con GPT, y Opus no lo hagas mas de nivel medio". Decision: Codex writes level, boids, wolves, integration; Opus capped at medium effort.
 - **L4 (2026-10-29)** — "vas a generar un documento donde se muestre este plan y [...] un documento que enliste las tareas [...] diferentes ramas y worktrees para cada uno de estos puntos".
 - **L5 (2026-10-29)** — Setup decisions: removed `com.unity.ai.navigation` (NavMesh package) from the manifest; layers 8–12 = Obstacle, Boid, Hunter, Wolf, Interest; FSM API mirrors the class `StateMachine` (RegisterState/Update) but owns transitions.
+- **L6 (2026-10-29)** — User instruction: "Tene en cuenta algo, quiero trabajar directametne desde aca, despues cuando subamos a github lo haremos en diferentes ramas que ya estan prestablecidas, eso no importa ahora porque no puedo duplicar y hacer un proyecto de Unity por cada rama, asi que nos la vamos a tener que arreglar con eso. Quiero que trabajes con lo que tenemos por favor". Decision: local Unity work stays in the existing checkout; branch/worktree separation is deferred until GitHub publishing.
+- **L7 (2026-10-29)** — User confirmed the proposed Boids process: "Bueno dale, entonces arranca con el proceso que queres hacer." After the Unity Editor recovered, the user requested a retry: "proba ahora por favor".
+- **L8 (2026-10-30)** — User request: "Lo que tenes que hacer ahora es la parte de la FSM, el T4 entero, no mas que eso." T4 delivered: `VisionQuery` (range, optional angle, LOS raycast) + `VisionSensor` (staggered scans, closest target, `TargetFilter` veto for S8 safe-zone concealment, range/FOV gizmos) and `StateMachineTests` + `VisionSensorTests`. RED found a priority bug: a lower-priority "any" transition could preempt the current state while its own higher-priority condition still held (Dead → Flee). Fix: the highest satisfied "any" transition wins even when it targets the current state. Consequence for T5/T6: an "any" condition that stays true keeps the agent in that state; exits require that condition to become false. Next: T3 (graph + A*), then T5.
