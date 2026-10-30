@@ -194,7 +194,7 @@ namespace Parcial2.Wolves
             if (sawHunter)
                 return;
 
-            Pack.Track(knownHunter);
+            Pack.Track(this, knownHunter, LastKnownPosition);
             HunterDetected?.Invoke(LastKnownPosition);
         }
 
@@ -244,6 +244,7 @@ namespace Parcial2.Wolves
 
             knownHunter = Pack.Target;
             AlertReceived?.Invoke(source, lastKnownPosition);
+            Pack.ReportAlertReceived(this, source, lastKnownPosition);
             if (!SeesHunter)
                 Remember(lastKnownPosition);
         }

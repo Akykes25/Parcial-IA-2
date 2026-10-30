@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 9182648496443023906}
   - component: {fileID: 8377390559520067049}
   - component: {fileID: 1809349981623498955}
+  - component: {fileID: 5510000000000000002}
   m_Layer: 10
   m_Name: Hunter
   m_TagString: Untagged
@@ -275,3 +276,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Hunter.HunterFeedback
   attackLineDuration: 0.4
   logEvents: 1
+--- !u!114 &5510000000000000002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150103094947119520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d4a1c93e5b84a2f8c6e0d19b3a75e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Feedback.FeedbackHud
+  fontSize: 16

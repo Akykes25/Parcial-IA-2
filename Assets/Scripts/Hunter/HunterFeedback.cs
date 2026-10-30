@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using Parcial2.Boids;
 using Parcial2.Core;
-using Parcial2.Navigation;
+using Parcial2.Feedback;
 using UnityEngine;
 
 namespace Parcial2.Hunter
@@ -107,14 +106,14 @@ namespace Parcial2.Hunter
             }
 
             Vector3 center = transform.position;
-            DrawCircle(center, owner.VisionRadius, new Color(1f, 0.9f, 0.2f));
-            DrawCircle(center, owner.RangeAttackRadius, new Color(1f, 0.55f, 0.1f));
-            DrawCircle(center, owner.MeleeAttackRadius, new Color(0.95f, 0.15f, 0.15f));
+            FeedbackGizmos.DrawCircle(center, owner.VisionRadius, new Color(1f, 0.9f, 0.2f));
+            FeedbackGizmos.DrawCircle(center, owner.RangeAttackRadius, new Color(1f, 0.55f, 0.1f));
+            FeedbackGizmos.DrawCircle(center, owner.MeleeAttackRadius, new Color(0.95f, 0.15f, 0.15f));
 
             if (!Application.isPlaying || owner.Navigation == null)
                 return;
 
-            DrawPath(owner.Navigation);
+            FeedbackGizmos.DrawPath(owner.Navigation);
 
             if (owner.ChosenSafeZone != null)
             {
@@ -130,40 +129,6 @@ namespace Parcial2.Hunter
             }
 
             DrawLabel(owner);
-        }
-
-        private static void DrawPath(NavigationAgent navigation)
-        {
-            if (!navigation.HasDestination)
-                return;
-
-            if (!navigation.IsFollowingPath)
-            {
-                // Clear route: steering only, no A* path.
-                Gizmos.color = new Color(0.2f, 0.9f, 0.9f, 0.5f);
-                Gizmos.DrawWireSphere(navigation.Destination, 0.3f);
-                return;
-            }
-
-            IReadOnlyList<GraphNode> path = navigation.Path;
-            Gizmos.color = Color.cyan;
-            for (int i = 0; i < path.Count - 1; i++)
-                Gizmos.DrawLine(path[i].Position, path[i + 1].Position);
-            Gizmos.DrawWireSphere(navigation.Destination, 0.3f);
-        }
-
-        private static void DrawCircle(Vector3 center, float radius, Color color)
-        {
-            const int segments = 40;
-            Gizmos.color = color;
-            Vector3 previous = center + new Vector3(radius, 0f, 0f);
-            for (int i = 1; i <= segments; i++)
-            {
-                float angle = i * Mathf.PI * 2f / segments;
-                Vector3 next = center + new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
-                Gizmos.DrawLine(previous, next);
-                previous = next;
-            }
         }
 
         private void DrawLabel(HunterController owner)

@@ -1,7 +1,9 @@
 {
     "name": "Parcial2.Runtime",
     "rootNamespace": "Parcial2",
-    "references": [],
+    "references": [
+        "UnityEngine.UI"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

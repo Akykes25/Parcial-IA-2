@@ -20,7 +20,9 @@ namespace Parcial2.Wolves
         public bool HasAlert { get; private set; }
         public Vector3 LastAlertPosition { get; private set; }
 
+        public event Action<WolfController, Vector3> HunterSpotted;
         public event Action<WolfController, Vector3> HowlRaised;
+        public event Action<WolfController, WolfController, Vector3> AlertReceived;
         public event Action HunterSheltered;
         public event Action HunterCaught;
 
@@ -53,7 +55,15 @@ namespace Parcial2.Wolves
         }
 
         /// <summary>Any wolf that sees the Hunter registers it, so its sheltering is reported even without a howl.</summary>
-        public void Track(HunterController hunter) => Target = hunter;
+        public void Track(WolfController spotter, HunterController hunter, Vector3 position)
+        {
+            Target = hunter;
+            HunterSpotted?.Invoke(spotter, position);
+        }
+
+        /// <summary>Lets observers (HUD, feedback) see which wolf took in which alert.</summary>
+        public void ReportAlertReceived(WolfController receiver, WolfController source, Vector3 position) =>
+            AlertReceived?.Invoke(receiver, source, position);
 
         public void RaiseHowl(WolfController source, HunterController hunter, Vector3 lastKnownPosition)
         {
