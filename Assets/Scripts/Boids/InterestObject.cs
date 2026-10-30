@@ -1,0 +1,131 @@
+using UnityEngine;
+
+namespace Parcial2.Boids
+{
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Collider))]
+    public sealed class InterestObject : MonoBehaviour
+    {
+        private static readonly int BaseColorProperty = Shader.PropertyToID("_BaseColor");
+        private static readonly int ColorProperty = Shader.PropertyToID("_Color");
+
+        [SerializeField, Min(0.1f)] private float maxLife = 4f;
+
+        private float life;
+        private float flashTimer;
+        private Renderer objectRenderer;
+        private Collider objectCollider;
+        private MaterialPropertyBlock colorProperties;
+
+        public float Life => life;
+        public float MaxLife => maxLife;
+        public bool IsAvailable { get; private set; }
+
+        private void Awake()
+        {
+            CacheComponents();
+            life = maxLife;
+            IsAvailable = true;
+            UpdateVisual();
+        }
+
+        public void Activate(Vector3 position, float startingLife)
+        {
+            transform.position = position;
+            maxLife = Mathf.Max(0.1f, startingLife);
+            life = maxLife;
+            flashTimer = 0f;
+            IsAvailable = true;
+            CacheComponents();
+
+            if (!gameObject.activeSelf)
+                gameObject.SetActive(true);
+
+            SetVisible(true);
+            UpdateVisual();
+        }
+
+        private void Update()
+        {
+            if (flashTimer <= 0f)
+                return;
+
+            flashTimer -= Time.deltaTime;
+            if (objectRenderer != null && IsAvailable)
+                SetColor(Color.white);
+
+            if (flashTimer <= 0f)
+                UpdateVisual();
+        }
+
+        public bool ReceiveDamage(float amount)
+        {
+            if (!IsAvailable)
+                return false;
+
+            life = Mathf.Max(0f, life - Mathf.Max(0f, amount));
+            flashTimer = 0.12f;
+            if (objectRenderer != null)
+                SetColor(Color.white);
+
+            if (life <= 0f)
+                Deactivate();
+            else
+                UpdateVisual();
+
+            return true;
+        }
+
+        private void SetVisible(bool visible)
+        {
+            if (objectRenderer != null)
+                objectRenderer.enabled = visible;
+            if (objectCollider != null)
+                objectCollider.enabled = visible;
+        }
+
+        private void CacheComponents()
+        {
+            if (objectRenderer == null)
+                objectRenderer = GetComponent<Renderer>();
+            if (objectCollider == null)
+                objectCollider = GetComponent<Collider>();
+            if (colorProperties == null)
+                colorProperties = new MaterialPropertyBlock();
+        }
+
+        private void Deactivate()
+        {
+            IsAvailable = false;
+            flashTimer = 0f;
+            SetVisible(false);
+            gameObject.SetActive(false);
+        }
+
+        private void UpdateVisual()
+        {
+            if (objectRenderer == null || !IsAvailable)
+                return;
+
+            float normalizedLife = Mathf.Clamp01(life / Mathf.Max(0.01f, maxLife));
+            SetColor(Color.Lerp(
+                new Color(0.95f, 0.22f, 0.16f),
+                new Color(1f, 0.78f, 0.1f),
+                normalizedLife));
+        }
+
+        private void SetColor(Color color)
+        {
+            if (objectRenderer == null)
+                return;
+
+            if (colorProperties == null)
+                colorProperties = new MaterialPropertyBlock();
+
+            objectRenderer.GetPropertyBlock(colorProperties);
+            colorProperties.SetColor(BaseColorProperty, color);
+            colorProperties.SetColor(ColorProperty, color);
+            objectRenderer.SetPropertyBlock(colorProperties);
+        }
+    }
+}
