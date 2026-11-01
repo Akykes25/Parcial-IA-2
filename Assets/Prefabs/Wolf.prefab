@@ -212,11 +212,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Wolves.WolfController
   sensor: {fileID: 6328589663801225503}
-  visionRange: 9
+  visionRange: 7
   viewAngle: 110
-  patrolSpeed: 2.5
-  investigateSpeed: 3.5
-  chaseSpeed: 4
+  patrolSpeed: 2
+  investigateSpeed: 3
+  chaseSpeed: 3.5
   agentRadius: 0.45
   arrivalDistance: 0.7
   slowingRadius: 1.2
@@ -227,6 +227,20 @@ MonoBehaviour:
   searchRadius: 5
   maxInvestigateTime: 20
   lookAroundSpeed: 90
+--- !u!114 &5510000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918266258994770311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c2e8b14d7a34f6892e0b3a1f6d57c42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Feedback.WolfFeedback
+  flashDuration: 0.6
+  logEvents: 1
 --- !u!1 &6280401867294484362
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,17 +331,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5510000000000000001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3918266258994770311}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c2e8b14d7a34f6892e0b3a1f6d57c42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Feedback.WolfFeedback
-  flashDuration: 0.6
-  logEvents: 1

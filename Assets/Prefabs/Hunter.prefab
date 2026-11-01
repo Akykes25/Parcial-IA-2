@@ -242,9 +242,11 @@ MonoBehaviour:
   respawnTime: 5
   safeZoneWaitTime: 3
   visionRadius: 10
-  wolfDetectionRadius: 9
+  wolfDetectionRadius: 6
   boidSensor: {fileID: 9150178935331009668}
   wolfSensor: {fileID: 3437929454069564122}
+  threatAvoidRadius: 3.5
+  threatMemoryTime: 8
   timeBetweenAttacks: 1.5
   meleeAttackRadius: 1.6
   rangeAttackRadius: 5
