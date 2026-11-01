@@ -110,6 +110,11 @@ namespace Parcial2.Editor.Levels
             new("Wolf L2 North Room", PatrolMode.Loop, 8, 9, 22, 21, 20),
             new("Wolf L3 East Ring", PatrolMode.PingPong, 15, 14, 13, 12, 11),
             new("Wolf L4 South Room", PatrolMode.Loop, 17, 18, 23, 24, 25),
+            // Ring sentries on the stretches no other wolf walks. They never share a corridor stretch with
+            // L2/L4: two wolves heading to the same node from opposite sides block each other in a 3 m corridor.
+            // Each turns at a room door the room wolf only passes through, and stays clear of the L1/L3 corners.
+            new("Wolf L5 North Ring", PatrolMode.PingPong, 7, 8),
+            new("Wolf L6 South Ring", PatrolMode.PingPong, 16, 17),
         };
 
         public static readonly Vector2 HunterStart = new(3f, 16f);

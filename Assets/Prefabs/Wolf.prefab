@@ -214,9 +214,9 @@ MonoBehaviour:
   sensor: {fileID: 6328589663801225503}
   visionRange: 9
   viewAngle: 110
-  patrolSpeed: 2.5
-  investigateSpeed: 3.5
-  chaseSpeed: 4
+  patrolSpeed: 3
+  investigateSpeed: 4
+  chaseSpeed: 4.4
   agentRadius: 0.45
   arrivalDistance: 0.7
   slowingRadius: 1.2
