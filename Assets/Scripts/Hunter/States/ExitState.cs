@@ -18,7 +18,7 @@ namespace Parcial2.Hunter.States
             ZoneVolume exit = hunter.Context.ExitZone;
             if (exit.Contains(hunter.Position))
             {
-                hunter.RestartCycle();
+                hunter.CompleteExit();
                 return;
             }
 

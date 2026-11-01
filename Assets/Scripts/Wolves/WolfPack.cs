@@ -25,6 +25,9 @@ namespace Parcial2.Wolves
         public event Action<WolfController, WolfController, Vector3> AlertReceived;
         public event Action HunterSheltered;
         public event Action HunterCaught;
+        public event Action HunterEscaped;
+
+        private int targetExitsReached;
 
         private void Awake()
         {
@@ -48,7 +51,9 @@ namespace Parcial2.Wolves
             if (Target == null)
                 return;
 
-            if (Target.IsCaught)
+            if (Target.ExitsReached != targetExitsReached)
+                ReportHunterEscaped();
+            else if (Target.IsCaught)
                 ReportHunterCaught();
             else if (Target.IsSheltered)
                 ReportHunterSheltered();
@@ -57,7 +62,7 @@ namespace Parcial2.Wolves
         /// <summary>Any wolf that sees the Hunter registers it, so its sheltering is reported even without a howl.</summary>
         public void Track(WolfController spotter, HunterController hunter, Vector3 position)
         {
-            Target = hunter;
+            SetTarget(hunter);
             HunterSpotted?.Invoke(spotter, position);
         }
 
@@ -67,7 +72,7 @@ namespace Parcial2.Wolves
 
         public void RaiseHowl(WolfController source, HunterController hunter, Vector3 lastKnownPosition)
         {
-            Target = hunter;
+            SetTarget(hunter);
             HasAlert = true;
             LastAlertPosition = lastKnownPosition;
             HowlRaised?.Invoke(source, lastKnownPosition);
@@ -84,6 +89,25 @@ namespace Parcial2.Wolves
         {
             ClearTarget();
             HunterCaught?.Invoke();
+        }
+
+        /// <summary>
+        /// The Hunter reached the exit and restarted at the start zone; without this the pack would keep
+        /// searching the exit and ambush it on its next trip.
+        /// </summary>
+        public void ReportHunterEscaped()
+        {
+            ClearTarget();
+            HunterEscaped?.Invoke();
+        }
+
+        private void SetTarget(HunterController hunter)
+        {
+            // Escapes before the pack started tracking do not count. Re-tracking the same Hunter keeps the old
+            // count, so a sighting in the same frame as the escape cannot hide it.
+            if (hunter != null && hunter != Target)
+                targetExitsReached = hunter.ExitsReached;
+            Target = hunter;
         }
 
         private void ClearTarget()

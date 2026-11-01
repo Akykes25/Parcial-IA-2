@@ -65,6 +65,7 @@ namespace Parcial2.Feedback
             pack.HowlRaised += OnHowlRaised;
             pack.AlertReceived += OnAlertReceived;
             pack.HunterSheltered += OnHunterSheltered;
+            pack.HunterEscaped += OnHunterEscaped;
         }
 
         private void OnDestroy()
@@ -76,6 +77,7 @@ namespace Parcial2.Feedback
             pack.HowlRaised -= OnHowlRaised;
             pack.AlertReceived -= OnAlertReceived;
             pack.HunterSheltered -= OnHunterSheltered;
+            pack.HunterEscaped -= OnHunterEscaped;
         }
 
         private void Update()
@@ -125,6 +127,8 @@ namespace Parcial2.Feedback
             AddLog(WolfTag, $"{receiver.name} received the alert from {source.name}");
 
         private void OnHunterSheltered() => AddLog(HunterTag, "Hunter sheltered: wolves lose the target");
+
+        private void OnHunterEscaped() => AddLog(HunterTag, "Hunter reached the exit: wolves lose the target");
 
         private static string Format(Vector3 position) => $"({position.x:F0}, {position.z:F0})";
 

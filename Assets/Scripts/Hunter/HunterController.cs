@@ -95,6 +95,9 @@ namespace Parcial2.Hunter
         public HunterMotor Motor => motor;
         public Vector3 Position => motor.Position;
         public int Gathers { get; private set; }
+
+        /// <summary>How many times the Hunter reached the exit; observers compare it to notice an escape.</summary>
+        public int ExitsReached { get; private set; }
         public bool IsPresent { get; private set; } = true;
         public bool IsSheltered => IsPresent && Context != null && Context.IsInsideSafeZone(Position);
         public HunterStateId CurrentState => brain != null ? brain.Current : HunterStateId.Search;
@@ -220,6 +223,13 @@ namespace Parcial2.Hunter
             motor.SetSimulated(present);
             foreach (Renderer part in bodyRenderers)
                 part.enabled = present;
+        }
+
+        /// <summary>Objective done: counts the escape and starts a new cycle from the start zone.</summary>
+        public void CompleteExit()
+        {
+            ExitsReached++;
+            RestartCycle();
         }
 
         /// <summary>Back to the start zone with no gathers, after dying or reaching the exit.</summary>

@@ -70,6 +70,23 @@ namespace Parcial2.Tests
         }
 
         [Test]
+        public void ReportHunterEscaped_ClearsTheAlertAndNotifiesOnlyEscapeListeners()
+        {
+            int escaped = 0;
+            int caught = 0;
+            pack.HunterEscaped += () => escaped++;
+            pack.HunterCaught += () => caught++;
+            pack.RaiseHowl(null, null, Vector3.one);
+
+            pack.ReportHunterEscaped();
+
+            Assert.That(escaped, Is.EqualTo(1));
+            Assert.That(caught, Is.Zero);
+            Assert.That(pack.HasAlert, Is.False);
+            Assert.That(pack.Target, Is.Null);
+        }
+
+        [Test]
         public void Unsubscribed_ListenersNoLongerReceiveHowls()
         {
             int calls = 0;

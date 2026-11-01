@@ -102,6 +102,7 @@ namespace Parcial2.Wolves
             Pack.HowlRaised += OnHowlRaised;
             Pack.HunterSheltered += OnTargetGone;
             Pack.HunterCaught += OnTargetGone;
+            Pack.HunterEscaped += OnTargetGone;
             brain.Start();
         }
 
@@ -115,6 +116,7 @@ namespace Parcial2.Wolves
                 Pack.HowlRaised -= OnHowlRaised;
                 Pack.HunterSheltered -= OnTargetGone;
                 Pack.HunterCaught -= OnTargetGone;
+                Pack.HunterEscaped -= OnTargetGone;
             }
         }
 
@@ -249,11 +251,14 @@ namespace Parcial2.Wolves
                 Remember(lastKnownPosition);
         }
 
-        /// <summary>Sheltered or caught: drop the target and the last known position, back to patrol.</summary>
+        /// <summary>Sheltered, caught or escaped: drop the target and the last known position, back to patrol.</summary>
         private void OnTargetGone()
         {
             SeesHunter = false;
             ForgetHunter();
+            // The last scan may predate a teleport to the start zone; rescan so the stale sighting is not
+            // remembered as a new last known position.
+            sensor.Scan();
         }
 
         private void OnBrainStateChanged(WolfStateId from, WolfStateId to) => StateChanged?.Invoke(from, to);
