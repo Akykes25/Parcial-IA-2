@@ -362,12 +362,13 @@ namespace Parcial2.Boids
             }
         }
 
-        private void OnDrawGizmosSelected()
+        // Always drawn (not only when selected): the brief asks for the boid radii to be visible.
+        private void OnDrawGizmos()
         {
-            Gizmos.color = new Color(1f, 0.2f, 0.75f, 0.35f);
-            Gizmos.DrawWireSphere(transform.position, hunterVisionRadius);
-            Gizmos.color = new Color(1f, 0.78f, 0.1f, 0.25f);
-            Gizmos.DrawWireSphere(transform.position, interestSearchRadius);
+            Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, hunterVisionRadius,
+                new Color(1f, 0.2f, 0.75f, 0.35f));
+            Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, interestSearchRadius,
+                new Color(1f, 0.78f, 0.1f, 0.25f));
         }
     }
 }

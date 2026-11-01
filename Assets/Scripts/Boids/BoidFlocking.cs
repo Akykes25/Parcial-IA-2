@@ -72,12 +72,13 @@ namespace Parcial2.Boids
                 + cohesion * cohesionWeight;
         }
 
-        private void OnDrawGizmosSelected()
+        // Always drawn (not only when selected): the brief asks for the boid radii to be visible.
+        private void OnDrawGizmos()
         {
-            Gizmos.color = new Color(0.1f, 0.8f, 1f, 0.25f);
-            Gizmos.DrawWireSphere(transform.position, perceptionRadius);
-            Gizmos.color = new Color(1f, 0.2f, 0.75f, 0.35f);
-            Gizmos.DrawWireSphere(transform.position, separationRadius);
+            Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, perceptionRadius,
+                new Color(0.1f, 0.8f, 1f, 0.25f));
+            Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, separationRadius,
+                new Color(0.4f, 0.4f, 1f, 0.6f));
         }
     }
 }
