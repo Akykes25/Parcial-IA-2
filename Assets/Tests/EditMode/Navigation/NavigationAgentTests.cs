@@ -254,6 +254,32 @@ namespace Parcial2.Tests
             Assert.That(agent.Path[0].name, Is.EqualTo("Side"));
         }
 
+        [TestCase(3f, true, TestName = "Tick_ShortDetourAroundThreat_IsTaken")]
+        [TestCase(30f, false, TestName = "Tick_LongDetourAroundThreat_IsRejected")]
+        public void Tick_ThreatDetour_IsCappedByLength(float detourX, bool expectAvoiding)
+        {
+            CreateWall();
+            GraphNode a = CreateNode("A", Vector3.zero);
+            GraphNode b = CreateNode("B", new Vector3(0f, 0f, 10f));
+            GraphNode detour = CreateNode("Detour", new Vector3(detourX, 0f, 5f));
+            a.SetNeighbors(new[] { b, detour });
+            b.SetNeighbors(new[] { a, detour });
+            detour.SetNeighbors(new[] { a, b });
+            NavigationGraph detourGraph = Track(new GameObject("DetourGraph")).AddComponent<NavigationGraph>();
+            detourGraph.SetNodes(new[] { a, b, detour });
+            var detourAgent = new NavigationAgent(detourGraph, 0.4f, 0.5f, 1f, GameLayers.ObstacleMask)
+            {
+                // The direct edge A -> B runs into the threat.
+                Threats = new StubThreats { Segment = (from, to) => !(from == Vector3.zero && to == b.Position) }
+            };
+            detourAgent.SetDestination(b.Position);
+
+            detourAgent.Tick(Vector3.zero, Speed, 0f);
+
+            Assert.That(detourAgent.IsAvoidingThreats, Is.EqualTo(expectAvoiding));
+            Assert.That(detourAgent.IsFollowingPath, Is.True);
+        }
+
         [Test]
         public void InvalidatePath_PlansAgainOnNextTick()
         {

@@ -16,6 +16,7 @@ namespace Parcial2.Navigation
         private const float ProgressDistanceSqr = 0.04f;
         private const float StuckTimeout = 0.75f;
         private const float DirectRouteCooldown = 2f;
+        private const float MaxThreatDetourFactor = 2f;
 
         private readonly NavigationGraph graph;
         private readonly AStarPathfinder pathfinder = new();
@@ -263,13 +264,22 @@ namespace Parcial2.Navigation
             bool recovering = recoveringFromStuck;
             recoveringFromStuck = false;
             GraphNode startNode = recovering ? graph.GetClosestNode(position, NodeFilter) : FindStartNode(position);
-            IsAvoidingThreats = Threats != null
-                && pathfinder.TryFindPath(startNode, goalNode, path, out _, NodeFilter, threatEdgeFilter);
-            if (!IsAvoidingThreats && !pathfinder.TryFindPath(startNode, goalNode, path, out _, NodeFilter))
+            if (!pathfinder.TryFindPath(startNode, goalNode, scratchPath, out float plainCost, NodeFilter))
             {
+                path.Clear();
                 unreachableGoal = goalNode;
                 follower.Clear();
                 return;
+            }
+
+            // A route around threats is only worth it while it stays reasonably short.
+            IsAvoidingThreats = Threats != null
+                && pathfinder.TryFindPath(startNode, goalNode, path, out float avoidingCost, NodeFilter, threatEdgeFilter)
+                && avoidingCost <= plainCost * MaxThreatDetourFactor;
+            if (!IsAvoidingThreats)
+            {
+                path.Clear();
+                path.AddRange(scratchPath);
             }
 
             if (!recovering)
