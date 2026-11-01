@@ -212,11 +212,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Parcial2.Runtime::Parcial2.Wolves.WolfController
   sensor: {fileID: 6328589663801225503}
-  visionRange: 7
+  visionRange: 9
   viewAngle: 110
-  patrolSpeed: 2
-  investigateSpeed: 3
-  chaseSpeed: 3.5
+  patrolSpeed: 2.5
+  investigateSpeed: 3.5
+  chaseSpeed: 4
   agentRadius: 0.45
   arrivalDistance: 0.7
   slowingRadius: 1.2
