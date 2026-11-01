@@ -1,7 +1,7 @@
 # Parcial 2 — Perception, Graphs and Pathfinding: Plan
 
 Goal: extend Parcial 1 (Boids + Hunter FSM) with wolves, FOV/LOS perception, a hand-built navigation graph and A*, aiming for a perfect grade.
-Unity **6000.3.22f1** (mandatory). Public repo: `github.com/Akykes25/Parcial-IA-2`.
+Unity **6000.3.17f1** is the version the brief requires; the project was built on 6000.3.22f1 (see TASKS L23). Public repo: `github.com/Akykes25/Parcial-IA-2`.
 
 ## 1. Inputs that drive every decision
 
