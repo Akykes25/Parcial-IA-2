@@ -55,6 +55,30 @@ namespace Parcial2.Tests.Navigation
         }
 
         [Test]
+        public void WithBlockedNextLeg_KeepsCurrentWaypointUntilVeryClose()
+        {
+            var follower = new PathFollower(reachDistance: 0.5f, slowingRadius: 1f, isLegClear: (from, to) => false);
+            follower.SetPath(StraightPath(5, 10));
+
+            follower.Evaluate(new Vector3(4.6f, 0f, 0f), 4f);
+            Assert.AreEqual(5f, follower.CurrentTarget.x, 0.001f, "Turning now would clip the corner.");
+
+            follower.Evaluate(new Vector3(4.9f, 0f, 0f), 4f);
+            Assert.AreEqual(10f, follower.CurrentTarget.x, 0.001f, "On the waypoint it advances anyway.");
+        }
+
+        [Test]
+        public void WithClearNextLeg_AdvancesAtReachDistance()
+        {
+            var follower = new PathFollower(reachDistance: 0.5f, slowingRadius: 1f, isLegClear: (from, to) => true);
+            follower.SetPath(StraightPath(5, 10));
+
+            follower.Evaluate(new Vector3(4.6f, 0f, 0f), 4f);
+
+            Assert.AreEqual(10f, follower.CurrentTarget.x, 0.001f);
+        }
+
+        [Test]
         public void CompletesAndStopsAtTheLastWaypoint()
         {
             var follower = new PathFollower(reachDistance: 0.5f, slowingRadius: 1f);

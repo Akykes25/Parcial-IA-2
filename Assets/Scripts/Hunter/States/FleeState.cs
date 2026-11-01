@@ -72,8 +72,16 @@ namespace Parcial2.Hunter.States
                 hunter.ChooseSafeZone(zone);
         }
 
-        /// <summary>Nearest by A* path length over the graph, not by straight-line distance.</summary>
+        /// <summary>
+        /// Nearest by A* path length over the graph, not by straight-line distance. Routes that keep away
+        /// from the wolves seen recently win; a route past a wolf is used only when no other exists.
+        /// </summary>
         private ZoneVolume FindNearestSafeZone()
+        {
+            return FindNearestSafeZone(avoidThreats: true) ?? FindNearestSafeZone(avoidThreats: false);
+        }
+
+        private ZoneVolume FindNearestSafeZone(bool avoidThreats)
         {
             ZoneVolume best = null;
             float bestCost = float.MaxValue;
@@ -86,7 +94,7 @@ namespace Parcial2.Hunter.States
                 if (candidate.Contains(hunter.Position))
                     return candidate;
 
-                if (hunter.Navigation.TryGetPathCost(hunter.Position, candidate.Center, out float cost)
+                if (hunter.Navigation.TryGetPathCost(hunter.Position, candidate.Center, out float cost, avoidThreats)
                     && cost < bestCost)
                 {
                     bestCost = cost;

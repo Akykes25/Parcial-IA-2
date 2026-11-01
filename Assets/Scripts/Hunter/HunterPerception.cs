@@ -23,6 +23,7 @@ namespace Parcial2.Hunter
 
         public bool SeesWolf => wolfSensor.HasTarget;
         public Transform ClosestWolf => wolfSensor.ClosestTarget;
+        public IReadOnlyList<Transform> VisibleWolves => wolfSensor.VisibleTargets;
 
         public bool SeesBoid(bool dead) => FindClosestBoid(dead, boidSensor.transform.position) != null;
 

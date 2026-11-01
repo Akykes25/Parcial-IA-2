@@ -37,8 +37,9 @@ namespace Parcial2.Navigation
             return TryFindPath(start, goal, result, out cost, filter);
         }
 
+        /// <param name="edgeFilter">Optional: edges (from, to) the search may not take.</param>
         public bool TryFindPath(GraphNode start, GraphNode goal, List<GraphNode> result, out float cost,
-            Predicate<GraphNode> filter = null)
+            Predicate<GraphNode> filter = null, Func<GraphNode, GraphNode, bool> edgeFilter = null)
         {
             result.Clear();
             cost = 0f;
@@ -69,17 +70,19 @@ namespace Parcial2.Navigation
                     return true;
                 }
 
-                Expand(current.Node, currentG, filter);
+                Expand(current.Node, currentG, filter, edgeFilter);
             }
 
             return false;
         }
 
-        private void Expand(GraphNode node, float nodeG, Predicate<GraphNode> filter)
+        private void Expand(GraphNode node, float nodeG, Predicate<GraphNode> filter,
+            Func<GraphNode, GraphNode, bool> edgeFilter)
         {
             foreach (GraphNode neighbor in node.Neighbors)
             {
-                if (neighbor == null || (filter != null && !filter(neighbor)))
+                if (neighbor == null || (filter != null && !filter(neighbor))
+                    || (edgeFilter != null && !edgeFilter(node, neighbor)))
                     continue;
 
                 float tentative = nodeG + Vector3.Distance(node.Position, neighbor.Position);

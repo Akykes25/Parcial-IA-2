@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Parcial2.Steering;
 using UnityEngine;
@@ -13,13 +14,20 @@ namespace Parcial2.Navigation
     {
         private readonly List<Vector3> waypoints = new();
         private readonly float reachDistance;
+        // Fraction of reachDistance under which a waypoint counts as reached even if the next leg is blocked.
+        private const float CloseReachFactor = 0.35f;
+
         private readonly float slowingRadius;
+        private readonly Func<Vector3, Vector3, bool> isLegClear;
         private int index;
 
-        public PathFollower(float reachDistance, float slowingRadius)
+        /// <param name="isLegClear">Optional body-clearance check (from, to). Near a waypoint the follower only
+        /// turns to the next one when that leg is clear, so it does not clip door corners.</param>
+        public PathFollower(float reachDistance, float slowingRadius, Func<Vector3, Vector3, bool> isLegClear = null)
         {
             this.reachDistance = reachDistance;
             this.slowingRadius = slowingRadius;
+            this.isLegClear = isLegClear;
         }
 
         public bool IsComplete => index >= waypoints.Count;
@@ -61,8 +69,19 @@ namespace Parcial2.Navigation
 
         private void AdvanceReachedWaypoints(Vector3 position)
         {
-            while (!IsComplete && FlatDistance(position, waypoints[index]) <= reachDistance)
+            while (!IsComplete && CanAdvance(position))
                 index++;
+        }
+
+        private bool CanAdvance(Vector3 position)
+        {
+            float distance = FlatDistance(position, waypoints[index]);
+            if (distance > reachDistance)
+                return false;
+
+            bool isLast = index == waypoints.Count - 1;
+            return isLast || isLegClear == null || distance <= reachDistance * CloseReachFactor
+                || isLegClear(position, waypoints[index + 1]);
         }
 
         private static float FlatDistance(Vector3 a, Vector3 b)

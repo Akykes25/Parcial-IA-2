@@ -32,6 +32,10 @@ namespace Parcial2.Hunter
         [SerializeField, Min(0.1f)] private float wolfDetectionRadius = 9f;
         [SerializeField] private VisionSensor boidSensor;
         [SerializeField] private VisionSensor wolfSensor;
+        [Tooltip("Routes avoid graph nodes this close to a wolf seen recently.")]
+        [SerializeField, Min(0.1f)] private float threatAvoidRadius = 3.5f;
+        [Tooltip("Seconds a seen wolf position keeps shaping the Hunter's routes.")]
+        [SerializeField, Min(0f)] private float threatMemoryTime = 20f;
 
         [Header("Attack")]
         [SerializeField, Min(0f)] private float timeBetweenAttacks = 1.5f;
@@ -86,6 +90,7 @@ namespace Parcial2.Hunter
         public SimulationContext Context { get; private set; }
         public NavigationAgent Navigation { get; private set; }
         public HunterPerception Perception { get; private set; }
+        public ThreatMemory Threats { get; private set; }
         public InterestSpawner Spawner { get; private set; }
         public HunterMotor Motor => motor;
         public Vector3 Position => motor.Position;
@@ -117,6 +122,7 @@ namespace Parcial2.Hunter
             wolfSensor.Configure(wolfDetectionRadius, VisionQuery.FullAngle, GameLayers.WolfMask,
                 GameLayers.ObstacleMask);
             Perception = new HunterPerception(boidSensor, wolfSensor);
+            Threats = new ThreatMemory(threatAvoidRadius, threatMemoryTime);
         }
 
         private void Start()
@@ -130,7 +136,7 @@ namespace Parcial2.Hunter
             }
 
             Navigation = new NavigationAgent(Context.Graph, agentRadius, arrivalDistance, slowingRadius,
-                GameLayers.ObstacleMask);
+                GameLayers.ObstacleMask) { Threats = Threats };
             brain = new HunterBrain(this, new HunterStateSet(new SearchState(this), new AttackState(this),
                 new GatherState(this), new FleeState(this), new ExitState(this), new DeadState(this)));
             brain.StateChanged += OnBrainStateChanged;
@@ -146,6 +152,8 @@ namespace Parcial2.Hunter
         private void Update()
         {
             motor.DesiredVelocity = Vector3.zero;
+            if (IsPresent && Threats.Record(Perception.VisibleWolves, Time.time))
+                Navigation.InvalidatePath();
             brain.Update();
         }
 
@@ -222,6 +230,7 @@ namespace Parcial2.Hunter
             spawn.y = Position.y;
             motor.Teleport(spawn);
             IsCaught = false;
+            Threats.Clear();
             ClearSafeZone();
             SetGathers(0);
         }
