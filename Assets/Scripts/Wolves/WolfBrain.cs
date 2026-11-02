@@ -17,10 +17,6 @@ namespace Parcial2.Wolves
         }
     }
 
-    /// <summary>
-    /// Wires the wolf states into the generic FSM. Priority, highest first: Chase (the Hunter is in sight),
-    /// Investigate (a last known position exists, from sight or from a howl), Patrol.
-    /// </summary>
     public sealed class WolfBrain
     {
         private readonly StateMachine<WolfStateId> machine = new();
@@ -34,7 +30,6 @@ namespace Parcial2.Wolves
             machine.AddAnyTransition(WolfStateId.Chase, () => conditions.SeesHunter);
             machine.AddAnyTransition(WolfStateId.Investigate, () => conditions.HasLastKnownPosition);
 
-            // Reached only when no "any" transition holds: the target and its position were dropped.
             machine.AddTransition(WolfStateId.Chase, WolfStateId.Patrol, () => !conditions.SeesHunter);
             machine.AddTransition(WolfStateId.Investigate, WolfStateId.Patrol,
                 () => !conditions.HasLastKnownPosition);

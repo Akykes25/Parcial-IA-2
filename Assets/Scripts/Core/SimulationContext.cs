@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Core
 {
-    /// <summary>
-    /// Scene-scoped access point for shared world data. Agents read it instead of holding
-    /// references to scene objects, so their prefabs stay reusable.
-    /// </summary>
     public class SimulationContext : MonoBehaviour
     {
         [SerializeField] private NavigationGraph graph;

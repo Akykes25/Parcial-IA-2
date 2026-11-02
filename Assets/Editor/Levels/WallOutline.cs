@@ -3,11 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>
-    /// Computes thin walls around the union of walkable rectangles. The rectangles' edges split the plane into
-    /// cells; every boundary between a walkable and a solid cell becomes wall, merged into straight runs and
-    /// placed entirely on the solid side so corridors keep their full width.
-    /// </summary>
     internal sealed class WallOutline
     {
         private readonly IReadOnlyList<Rect> walkable;
@@ -36,7 +31,6 @@ namespace Parcial2.Editor.Levels
             return walls;
         }
 
-        /// <summary>Walls along z = zs[j]. Side +1: solid above; -1: solid below.</summary>
         private void AddHorizontalRuns(int j, List<Rect> walls)
         {
             int columns = xs.Count - 1;
@@ -62,7 +56,6 @@ namespace Parcial2.Editor.Levels
             }
         }
 
-        /// <summary>Walls along x = xs[i]. Side +1: solid on the right; -1: solid on the left.</summary>
         private void AddVerticalRuns(int i, List<Rect> walls)
         {
             int rows = zs.Count - 1;

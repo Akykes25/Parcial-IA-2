@@ -4,11 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>
-    /// Picks a visible live boid, then melee inside MeleeAttackRadius, ranged inside RangeAttackRadius,
-    /// otherwise Pursuit. One successful attack resets the TBA and ends the state; losing sight of the
-    /// target ends it without touching the TBA.
-    /// </summary>
     public sealed class AttackState : ActivityState
     {
         private readonly HunterController hunter;

@@ -4,11 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Navigation
 {
-    /// <summary>
-    /// A* over a <see cref="NavigationGraph"/>. One instance owns its work buffers and can be reused
-    /// across searches. Wolves and the Hunter share this implementation.
-    /// No heuristic is used: the map is small, so the open set is ordered by accumulated cost only.
-    /// </summary>
     public class AStarPathfinder
     {
         private struct OpenEntry
@@ -37,7 +32,6 @@ namespace Parcial2.Navigation
             return TryFindPath(start, goal, result, out cost, filter);
         }
 
-        /// <param name="edgeFilter">Optional: edges (from, to) the search may not take.</param>
         public bool TryFindPath(GraphNode start, GraphNode goal, List<GraphNode> result, out float cost,
             Predicate<GraphNode> filter = null, Func<GraphNode, GraphNode, bool> edgeFilter = null)
         {
@@ -59,7 +53,6 @@ namespace Parcial2.Navigation
                 OpenEntry current = Pop();
                 float currentG = gScore[current.Node];
 
-                // A cheaper route to this node was found after this entry was queued.
                 if (current.Cost > currentG)
                     continue;
 

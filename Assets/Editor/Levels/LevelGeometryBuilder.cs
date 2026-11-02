@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>Creates floors, walls (Obstacle layer) and zone volumes from a list of walkable areas.</summary>
     internal static class LevelGeometryBuilder
     {
         private const string MaterialFolder = "Assets/Materials/Level/";

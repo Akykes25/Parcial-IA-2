@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Feedback
 {
-    /// <summary>Gizmo helpers shared by the Hunter and wolf feedback components.</summary>
     public static class FeedbackGizmos
     {
         private const int CircleSegments = 40;
@@ -22,7 +21,6 @@ namespace Parcial2.Feedback
             }
         }
 
-        /// <summary>Cyan A* path when pathfinding is in use, a faint marker when the route is clear.</summary>
         public static void DrawPath(NavigationAgent navigation)
         {
             if (navigation == null || !navigation.HasDestination)

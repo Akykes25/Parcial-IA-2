@@ -5,10 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter
 {
-    /// <summary>
-    /// Visual feedback for the Hunter: body colour per state, radii gizmos, the A* path in use, the chosen
-    /// safe zone, the last attack and a label with the state and gathers.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(HunterController))]
     public sealed class HunterFeedback : MonoBehaviour

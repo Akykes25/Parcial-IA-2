@@ -362,7 +362,6 @@ namespace Parcial2.Boids
             }
         }
 
-        // Always drawn (not only when selected): the brief asks for the boid radii to be visible.
         private void OnDrawGizmos()
         {
             Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, hunterVisionRadius,

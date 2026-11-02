@@ -6,7 +6,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>Moves the scene's agents and camera onto a freshly built level and spawns its wolves.</summary>
     internal static class LevelAgentsPlacer
     {
         private const string WolfPrefabPath = "Assets/Prefabs/Wolf.prefab";
@@ -26,7 +25,6 @@ namespace Parcial2.Editor.Levels
                 PlaceOnFloor(targets[i], positions[i], height);
         }
 
-        /// <summary>Replaces every wolf under the pack with one prefab instance per route, at its first waypoint.</summary>
         public static void SpawnWolves(WolfPack pack, IReadOnlyList<RouteSpec> routes, IReadOnlyList<GraphNode> nodes,
             float height)
         {

@@ -18,7 +18,6 @@ namespace Parcial2.Tests
         [SetUp]
         public void SetUp()
         {
-            // Start (0,0,0) -> Side (6,0,5) -> Goal (0,0,10). The wall at z = 5 blocks the straight line.
             GraphNode start = CreateNode("Start", new Vector3(0f, 0f, 0f));
             GraphNode side = CreateNode("Side", new Vector3(6f, 0f, 5f));
             GraphNode goal = CreateNode("Goal", new Vector3(0f, 0f, 10f));
@@ -72,7 +71,6 @@ namespace Parcial2.Tests
         public void Tick_WhenSecondNodeIsHidden_KeepsStartNode()
         {
             CreateWall();
-            // From behind the wall's west end, Side (6, 0, 5) is out of reach in a straight line.
             GameObject block = Track(GameObject.CreatePrimitive(PrimitiveType.Cube));
             block.layer = GameLayers.Obstacle;
             block.transform.position = new Vector3(3f, 0f, 2f);
@@ -245,7 +243,6 @@ namespace Parcial2.Tests
         public void Tick_WithThreatBehind_DoesNotStartPathTowardsIt()
         {
             CreateWall();
-            // The threat sits at the origin: stepping back to the Start node means walking into it.
             agent.Threats = new StubThreats { Segment = (from, to) => to != Vector3.zero };
             agent.SetDestination(new Vector3(0f, 0f, 10f));
 
@@ -269,7 +266,6 @@ namespace Parcial2.Tests
             detourGraph.SetNodes(new[] { a, b, detour });
             var detourAgent = new NavigationAgent(detourGraph, 0.4f, 0.5f, 1f, GameLayers.ObstacleMask)
             {
-                // The direct edge A -> B runs into the threat.
                 Threats = new StubThreats { Segment = (from, to) => !(from == Vector3.zero && to == b.Position) }
             };
             detourAgent.SetDestination(b.Position);

@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Parcial2.Perception
 {
-    /// <summary>Stateless vision checks: max distance, optional view angle and line of sight against obstacles.</summary>
     public static class VisionQuery
     {
         public const float FullAngle = 360f;
@@ -12,7 +11,6 @@ namespace Parcial2.Perception
             return (point - origin).sqrMagnitude <= range * range;
         }
 
-        /// <summary>Angle is measured on the ground plane; 360 disables the check.</summary>
         public static bool IsInsideViewAngle(Vector3 forward, Vector3 toPoint, float viewAngle)
         {
             if (viewAngle >= FullAngle)
@@ -36,7 +34,6 @@ namespace Parcial2.Perception
             return !Physics.Raycast(origin, toPoint / distance, distance, obstacleMask, QueryTriggerInteraction.Ignore);
         }
 
-        /// <summary>Cheapest checks first; the raycast only runs for points that pass range and angle.</summary>
         public static bool CanSee(Vector3 origin, Vector3 forward, Vector3 point, float range, float viewAngle,
             int obstacleMask)
         {

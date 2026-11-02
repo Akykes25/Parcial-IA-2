@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Parcial2.Wolves
 {
-    /// <summary>Applies the velocity chosen by the active wolf state through a dynamic Rigidbody.</summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody))]
     public sealed class WolfMotor : MonoBehaviour
@@ -39,7 +38,6 @@ namespace Parcial2.Wolves
             }
         }
 
-        /// <summary>Rotates in place, used to sweep the view cone while searching.</summary>
         public void Turn(float degreesPerSecond)
         {
             body.MoveRotation(body.rotation * Quaternion.Euler(0f, degreesPerSecond * Time.deltaTime, 0f));

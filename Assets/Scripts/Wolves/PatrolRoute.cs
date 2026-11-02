@@ -10,10 +10,6 @@ namespace Parcial2.Wolves
         PingPong
     }
 
-    /// <summary>
-    /// Patrol waypoints of one wolf. Waypoints are graph nodes, so an unreachable waypoint is solved with the
-    /// same A* the rest of the agents use. Safe-zone nodes are not valid waypoints.
-    /// </summary>
     public class PatrolRoute : MonoBehaviour
     {
         [SerializeField] private PatrolMode mode = PatrolMode.Loop;

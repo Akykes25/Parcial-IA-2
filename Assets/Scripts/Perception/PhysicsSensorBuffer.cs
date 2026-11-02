@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Perception
 {
-    /// <summary>Reusable non-allocating overlap query that grows when it fills up.</summary>
     public sealed class PhysicsSensorBuffer
     {
         private const int DefaultCapacity = 32;

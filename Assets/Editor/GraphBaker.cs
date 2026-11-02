@@ -7,10 +7,6 @@ using UnityEngine.SceneManagement;
 
 namespace Parcial2.Editor
 {
-    /// <summary>
-    /// Connects graph nodes once, at edit time: two nodes are linked when they are close enough and a
-    /// sphere sweep between them does not hit an obstacle. The result is serialized in the scene.
-    /// </summary>
     public static class GraphBaker
     {
         private const float DefaultMaxLinkDistance = 9f;

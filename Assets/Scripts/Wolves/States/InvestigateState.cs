@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Wolves.States
 {
-    /// <summary>
-    /// Goes to the Hunter's last known position (A* when it is not in line of sight), then searches the
-    /// nearby graph nodes for SearchDuration. A newer position restarts the trip; when the search ends
-    /// without news, or the position cannot be reached in time, the wolf forgets the target.
-    /// </summary>
     public sealed class InvestigateState : State
     {
         private readonly WolfController wolf;

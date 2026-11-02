@@ -5,11 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Navigation
 {
-    /// <summary>
-    /// Single movement rule shared by every graph agent: when the route to the destination is clear,
-    /// steer straight to it; otherwise run A* and follow the path with steering. The clearance check runs
-    /// on an interval and A* only runs again when the destination maps to a different graph node.
-    /// </summary>
     public sealed class NavigationAgent
     {
         private const float DestinationMovedSqr = 0.25f;
@@ -53,13 +48,10 @@ namespace Parcial2.Navigation
             threatEdgeFilter = (from, to) => Threats.IsSegmentClear(from.Position, to.Position);
         }
 
-        /// <summary>Nodes this agent may not use, e.g. wolves skip safe-zone nodes.</summary>
         public Predicate<GraphNode> NodeFilter { get; set; }
 
-        /// <summary>Places to route around when possible. Ignored when no route avoids them.</summary>
         public INavigationThreats Threats { get; set; }
 
-        /// <summary>True when the current A* path was planned around <see cref="Threats"/>.</summary>
         public bool IsAvoidingThreats { get; private set; }
 
         public bool HasDestination => hasDestination;
@@ -95,7 +87,6 @@ namespace Parcial2.Navigation
             follower.Clear();
         }
 
-        /// <summary>Returns the desired velocity for this frame.</summary>
         public Vector3 Tick(Vector3 position, float maxSpeed, float time)
         {
             if (!hasDestination)
@@ -115,7 +106,6 @@ namespace Parcial2.Navigation
                 if (!IsStuck(position, time))
                     return SteeringBehaviours.Arrive(position, destination, maxSpeed, slowingRadius);
 
-                // The sphere cast misses walls the body already touches; plan around them with A* for a while.
                 directRoute = false;
                 directRouteBlockedUntil = time + DirectRouteCooldown;
                 ClearPath();
@@ -138,7 +128,6 @@ namespace Parcial2.Navigation
             if (path.Count == 0)
                 return Vector3.zero;
 
-            // The last node is next to the destination; close the gap with steering.
             return follower.IsComplete
                 ? SteeringBehaviours.Arrive(position, destination, maxSpeed, slowingRadius)
                 : follower.Evaluate(position, maxSpeed);
@@ -151,10 +140,6 @@ namespace Parcial2.Navigation
             return hasDestination && offset.sqrMagnitude <= tolerance * tolerance;
         }
 
-        /// <summary>
-        /// Length of the A* path between two points, used to rank destinations. With
-        /// <paramref name="avoidThreats"/> only routes around <see cref="Threats"/> count.
-        /// </summary>
         public bool TryGetPathCost(Vector3 from, Vector3 to, out float cost, bool avoidThreats = false)
         {
             if (!avoidThreats || Threats == null)
@@ -165,11 +150,6 @@ namespace Parcial2.Navigation
             return pathfinder.TryFindPath(start, goal, scratchPath, out cost, NodeFilter, threatEdgeFilter);
         }
 
-        /// <summary>
-        /// Closest usable node. With threats, only a node reachable in a straight line that does not lead
-        /// towards them is taken, so a path never starts by stepping back into a wolf or into a wall.
-        /// Sphere casts run only for nodes closer than the best one found so far.
-        /// </summary>
         private GraphNode FindStartNode(Vector3 position)
         {
             if (Threats == null)
@@ -196,7 +176,6 @@ namespace Parcial2.Navigation
             return best ?? graph.GetClosestNode(position, NodeFilter);
         }
 
-        /// <summary>Skips the first node when the second one is already reachable, so a new path never backtracks.</summary>
         private void SkipPassedStartNode(Vector3 position)
         {
             if (path.Count < 2)
@@ -207,7 +186,6 @@ namespace Parcial2.Navigation
                 path.RemoveAt(0);
         }
 
-        /// <summary>Drops the current route so the next tick plans again, e.g. after new threats appear.</summary>
         public void InvalidatePath()
         {
             nextClearanceCheck = float.MinValue;
@@ -236,7 +214,6 @@ namespace Parcial2.Navigation
             unreachableGoal = null;
         }
 
-        /// <summary>No progress for a while (e.g. snagged on a corner): plan again from where we are.</summary>
         private bool IsStuck(Vector3 position, float time)
         {
             Vector3 moved = position - progressPosition;
@@ -259,8 +236,6 @@ namespace Parcial2.Navigation
             PathRequests++;
             progressPosition = position;
             progressTime = time;
-            // A body wedged on a corner passes every sphere cast, so recovery heads for the plain closest
-            // node (usually back off the corner) instead of the shortcut that got it stuck.
             bool recovering = recoveringFromStuck;
             recoveringFromStuck = false;
             GraphNode startNode = recovering ? graph.GetClosestNode(position, NodeFilter) : FindStartNode(position);
@@ -272,7 +247,6 @@ namespace Parcial2.Navigation
                 return;
             }
 
-            // A route around threats is only worth it while it stays reasonably short.
             IsAvoidingThreats = Threats != null
                 && pathfinder.TryFindPath(startNode, goalNode, path, out float avoidingCost, NodeFilter, threatEdgeFilter)
                 && avoidingCost <= plainCost * MaxThreatDetourFactor;

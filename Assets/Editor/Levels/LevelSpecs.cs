@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>Walkable rectangle of a level on the x/z plane. Areas with a zone also get a ZoneVolume.</summary>
     internal readonly struct AreaSpec
     {
         public readonly string Name;
@@ -33,7 +32,6 @@ namespace Parcial2.Editor.Levels
         }
     }
 
-    /// <summary>Patrol of one wolf; waypoints are indices into the level's node list.</summary>
     internal readonly struct RouteSpec
     {
         public readonly string WolfName;

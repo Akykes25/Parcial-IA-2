@@ -24,10 +24,6 @@ namespace Parcial2.Hunter
         }
     }
 
-    /// <summary>
-    /// Wires the Hunter states into the generic FSM. Priority, highest first:
-    /// Dead, Flee, Exit, Gather, Attack, Search. All transitions are conditions owned by the machine.
-    /// </summary>
     public sealed class HunterBrain
     {
         private readonly StateMachine<HunterStateId> machine = new();
@@ -41,12 +37,10 @@ namespace Parcial2.Hunter
             machine.RegisterState(HunterStateId.Exit, states.Exit);
             machine.RegisterState(HunterStateId.Dead, states.Dead);
 
-            // "Any" transitions, in priority order. A condition that stays true keeps its state active.
             machine.AddAnyTransition(HunterStateId.Dead, () => conditions.IsCaught);
             machine.AddAnyTransition(HunterStateId.Flee, () => conditions.SeesWolf || states.Flee.InProgress);
             machine.AddAnyTransition(HunterStateId.Exit, () => conditions.HasRequiredGathers);
 
-            // From Search the FSM checks Gather before Attack.
             machine.AddTransition(HunterStateId.Search, HunterStateId.Gather, () => conditions.SeesDeadBoid);
             machine.AddTransition(HunterStateId.Search, HunterStateId.Attack, () => conditions.CanAttack);
 

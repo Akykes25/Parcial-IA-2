@@ -6,10 +6,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>
-    /// Initial state: travel to the hunting ground with A*, then roam between random hunting-ground nodes
-    /// and periodically drop interest objects while inside.
-    /// </summary>
     public sealed class SearchState : State
     {
         private readonly HunterController hunter;

@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>
-    /// Walks to a dead boid and gathers it for GatherDuration. If the boid stops being available, or the
-    /// state is interrupted (Flee, Dead), the gather is dropped without credit.
-    /// </summary>
     public sealed class GatherState : ActivityState
     {
         private readonly HunterController hunter;

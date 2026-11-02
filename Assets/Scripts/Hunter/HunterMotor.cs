@@ -2,10 +2,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter
 {
-    /// <summary>
-    /// Applies the velocity chosen by the active state through a dynamic Rigidbody, so walls stop the Hunter
-    /// even when steering points into them.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Rigidbody))]
     public sealed class HunterMotor : MonoBehaviour
@@ -63,7 +59,6 @@ namespace Parcial2.Hunter
             transform.position = position;
         }
 
-        /// <summary>Turns physics off while the Hunter is out of the scene (Dead).</summary>
         public void SetSimulated(bool simulated)
         {
             DesiredVelocity = Vector3.zero;

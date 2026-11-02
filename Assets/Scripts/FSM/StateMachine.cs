@@ -3,12 +3,6 @@ using System.Collections.Generic;
 
 namespace Parcial2.FSM
 {
-    /// <summary>
-    /// Agent-agnostic state machine. Transitions are registered as conditions and evaluated by the
-    /// machine itself: "any" transitions first, in registration order (highest priority first),
-    /// then the transitions that leave the current state. While the highest-priority satisfied "any"
-    /// transition targets the current state, no lower-priority transition can preempt it.
-    /// </summary>
     public class StateMachine<TKey> where TKey : struct, Enum
     {
         private readonly struct Transition
@@ -78,7 +72,6 @@ namespace Parcial2.FSM
                 if (!transition.Condition())
                     continue;
 
-                // The highest-priority satisfied "any" transition wins, even when it targets the current state.
                 nextKey = transition.To;
                 return !IsCurrent(nextKey);
             }

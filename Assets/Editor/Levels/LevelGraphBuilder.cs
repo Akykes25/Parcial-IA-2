@@ -6,10 +6,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>
-    /// Creates the graph nodes and links them explicitly, then checks that every link leaves room for the
-    /// widest agent body. Explicit links avoid the redundant shortcuts a distance-based bake would add.
-    /// </summary>
     internal static class LevelGraphBuilder
     {
         public static List<GraphNode> Build(NavigationGraph graph, IReadOnlyList<NodeSpec> specs,
@@ -47,7 +43,6 @@ namespace Parcial2.Editor.Levels
             return nodes;
         }
 
-        /// <summary>Logs every node inside an obstacle and every link a body of the given radius cannot travel.</summary>
         public static int ReportBlocked(IReadOnlyList<GraphNode> nodes, float bodyRadius)
         {
             Physics.SyncTransforms();

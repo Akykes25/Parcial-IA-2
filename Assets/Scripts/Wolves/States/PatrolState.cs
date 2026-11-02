@@ -3,10 +3,6 @@ using Parcial2.Navigation;
 
 namespace Parcial2.Wolves.States
 {
-    /// <summary>
-    /// Walks the patrol route. Each waypoint is reached straight when it is in line of sight and with A*
-    /// otherwise; after a chase the wolf resumes from the closest waypoint.
-    /// </summary>
     public sealed class PatrolState : State
     {
         private readonly WolfController wolf;

@@ -8,10 +8,6 @@ using UnityEngine;
 
 namespace Parcial2.Wolves
 {
-    /// <summary>
-    /// Wolf NPC: owns its tunables, keeps what it knows about the Hunter (sight and last known position) and
-    /// offers the actions its states use. Every decision is taken by <see cref="WolfBrain"/>.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(WolfMotor), typeof(PatrolRoute))]
     public sealed class WolfController : MonoBehaviour, IWolfConditions
@@ -66,7 +62,6 @@ namespace Parcial2.Wolves
         public bool HasLastKnownPosition { get; private set; }
         public Vector3 LastKnownPosition { get; private set; }
 
-        /// <summary>Changes every time the last known position is replaced, so states can restart on news.</summary>
         public int KnowledgeVersion { get; private set; }
 
         public event Action<WolfStateId, WolfStateId> StateChanged;
@@ -128,14 +123,12 @@ namespace Parcial2.Wolves
             TryCapture();
         }
 
-        /// <summary>Moves through the graph without safe-zone nodes: straight when clear, A* otherwise.</summary>
         public void MoveTo(Vector3 destination, float speed)
         {
             destination.y = Position.y;
             Navigation.SetDestination(destination);
             Vector3 velocity = Navigation.Tick(Position, speed, Time.time);
 
-            // Direct steering could cut through a safe-zone doorway; the wolf stops at its edge instead.
             if (velocity.sqrMagnitude > 0.0001f
                 && Context.IsInsideSafeZone(Position + velocity.normalized * safeZoneMargin))
                 velocity = Vector3.zero;
@@ -162,7 +155,6 @@ namespace Parcial2.Wolves
             return offset.sqrMagnitude <= arrivalDistance * arrivalDistance;
         }
 
-        /// <summary>Alerts the pack with the position where the Hunter was just seen.</summary>
         public void Howl()
         {
             if (knownHunter == null || Time.time < nextHowlTime)
@@ -173,7 +165,6 @@ namespace Parcial2.Wolves
             Pack.RaiseHowl(this, knownHunter, LastKnownPosition);
         }
 
-        /// <summary>Drops the target and its last known position; the brain goes back to patrol.</summary>
         public void ForgetHunter()
         {
             bool hadTarget = HasLastKnownPosition;
@@ -186,7 +177,6 @@ namespace Parcial2.Wolves
         private void RefreshSight()
         {
             bool sawHunter = SeesHunter;
-            // Re-checked here because the last scan can be up to one scan interval old.
             SeesHunter = sensor.HasTarget && IsDetectable(sensor.ClosestTarget);
             if (!SeesHunter)
                 return;
@@ -218,7 +208,6 @@ namespace Parcial2.Wolves
                 knownHunter.Capture();
         }
 
-        /// <summary>Sensor veto: a Hunter that is caught, dead or sheltered in a safe zone cannot be detected.</summary>
         private bool IsDetectable(Transform target)
         {
             HunterController hunter = ResolveHunter(target);
@@ -251,13 +240,10 @@ namespace Parcial2.Wolves
                 Remember(lastKnownPosition);
         }
 
-        /// <summary>Sheltered, caught or escaped: drop the target and the last known position, back to patrol.</summary>
         private void OnTargetGone()
         {
             SeesHunter = false;
             ForgetHunter();
-            // The last scan may predate a teleport to the start zone; rescan so the stale sighting is not
-            // remembered as a new last known position.
             sensor.Scan();
         }
 

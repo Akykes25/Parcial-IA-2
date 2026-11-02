@@ -7,10 +7,6 @@ using UnityEngine.UI;
 
 namespace Parcial2.Feedback
 {
-    /// <summary>
-    /// On-screen feedback built in code: Hunter state, gathers and chosen safe zone on top, and a short log of
-    /// the detections and alerts that prove perception and communication are working.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(HunterController))]
     public sealed class FeedbackHud : MonoBehaviour
@@ -82,7 +78,6 @@ namespace Parcial2.Feedback
 
         private void Update()
         {
-            // Rebuild the text only when something shown changed, so a steady frame allocates nothing.
             if (hunter.CurrentState != shownState || hunter.Gathers != shownGathers
                 || hunter.ChosenSafeZone != shownZone)
                 statusDirty = true;

@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>Out of the scene for RespawnTime, then back at the start zone with zero gathers.</summary>
     public sealed class DeadState : State
     {
         private readonly HunterController hunter;

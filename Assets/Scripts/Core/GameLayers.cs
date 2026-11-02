@@ -1,6 +1,5 @@
 namespace Parcial2.Core
 {
-    /// <summary>Layer indices must match ProjectSettings/TagManager.asset.</summary>
     public static class GameLayers
     {
         public const int Obstacle = 8;

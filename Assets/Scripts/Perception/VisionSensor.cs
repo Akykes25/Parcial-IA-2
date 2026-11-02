@@ -5,10 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Perception
 {
-    /// <summary>
-    /// Periodic vision scan: overlap sphere on the target layers, then range, view angle and a line-of-sight
-    /// raycast for each candidate only. Agents read the results instead of querying physics themselves.
-    /// </summary>
     public class VisionSensor : MonoBehaviour
     {
         private const int CircleSegments = 32;
@@ -32,7 +28,6 @@ namespace Parcial2.Perception
         public Transform ClosestTarget { get; private set; }
         public bool HasTarget => ClosestTarget != null;
 
-        /// <summary>Optional veto, e.g. wolves ignore a Hunter sheltered in a safe zone.</summary>
         public Predicate<Transform> TargetFilter { get; set; }
 
         public void Configure(float maxDistance, float angle, int targets, int obstacles)
@@ -45,7 +40,6 @@ namespace Parcial2.Perception
 
         private void OnEnable()
         {
-            // Stagger sensors so they do not all query physics on the same frame.
             nextScanTime = Time.time + UnityEngine.Random.Range(0f, scanInterval);
         }
 

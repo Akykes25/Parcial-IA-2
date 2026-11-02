@@ -14,10 +14,6 @@ namespace Parcial2.Hunter
         Ranged
     }
 
-    /// <summary>
-    /// Hunter NPC: owns its tunables, exposes what it perceives as FSM conditions and offers the actions
-    /// its states use. Every decision is taken by <see cref="HunterBrain"/>.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(HunterMotor), typeof(InterestSpawner))]
     public sealed class HunterController : MonoBehaviour, IHunterConditions
@@ -96,7 +92,6 @@ namespace Parcial2.Hunter
         public Vector3 Position => motor.Position;
         public int Gathers { get; private set; }
 
-        /// <summary>How many times the Hunter reached the exit; observers compare it to notice an escape.</summary>
         public int ExitsReached { get; private set; }
         public bool IsPresent { get; private set; } = true;
         public bool IsSheltered => IsPresent && Context != null && Context.IsInsideSafeZone(Position);
@@ -160,7 +155,6 @@ namespace Parcial2.Hunter
             brain.Update();
         }
 
-        /// <summary>Moves through the graph: straight when the route is clear, A* otherwise.</summary>
         public void MoveTo(Vector3 destination, float speed)
         {
             destination.y = Position.y;
@@ -168,7 +162,6 @@ namespace Parcial2.Hunter
             motor.DesiredVelocity = Navigation.Tick(Position, speed, Time.time);
         }
 
-        /// <summary>Steering only, for the final stretch towards a visible boid.</summary>
         public void Steer(Vector3 velocity)
         {
             Navigation.Stop();
@@ -207,7 +200,6 @@ namespace Parcial2.Hunter
 
         public void ClearSafeZone() => ChosenSafeZone = null;
 
-        /// <summary>Called by a wolf that reaches the Hunter inside its capture radius.</summary>
         public void Capture()
         {
             if (IsCaught || !IsPresent || IsSheltered)
@@ -225,14 +217,12 @@ namespace Parcial2.Hunter
                 part.enabled = present;
         }
 
-        /// <summary>Objective done: counts the escape and starts a new cycle from the start zone.</summary>
         public void CompleteExit()
         {
             ExitsReached++;
             RestartCycle();
         }
 
-        /// <summary>Back to the start zone with no gathers, after dying or reaching the exit.</summary>
         public void RestartCycle()
         {
             Halt();

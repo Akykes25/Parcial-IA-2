@@ -1,6 +1,5 @@
 namespace Parcial2.Wolves
 {
-    /// <summary>Walks waypoint indices: Loop goes back to the first one, PingPong reverses at both ends.</summary>
     public sealed class PatrolCursor
     {
         private readonly PatrolMode mode;

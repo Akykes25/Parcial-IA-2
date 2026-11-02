@@ -3,7 +3,6 @@ using Parcial2.FSM;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>Goes to the exit with A*; on arrival the cycle restarts from the start zone.</summary>
     public sealed class ExitState : State
     {
         private readonly HunterController hunter;

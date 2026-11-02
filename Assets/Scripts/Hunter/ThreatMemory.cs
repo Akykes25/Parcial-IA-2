@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter
 {
-    /// <summary>
-    /// Remembers where the Hunter last saw each wolf for a short time, so its routes (flee, search, exit)
-    /// go around them instead of straight through. Fixed capacity: nothing is allocated after construction.
-    /// </summary>
     public sealed class ThreatMemory : INavigationThreats
     {
         private readonly Transform[] wolves;
@@ -30,9 +26,6 @@ namespace Parcial2.Hunter
 
         public float AvoidRadius => Mathf.Sqrt(avoidRadiusSqr);
 
-        /// <summary>
-        /// Stores the visible wolves. Returns true when a wolf is new or moved far enough to change routes.
-        /// </summary>
         public bool Record(IReadOnlyList<Transform> visible, float time)
         {
             now = time;
@@ -89,7 +82,6 @@ namespace Parcial2.Hunter
             return true;
         }
 
-        /// <summary>A threat blocks the segment only when it lies ahead of <paramref name="from"/>.</summary>
         public bool IsSegmentClear(Vector3 from, Vector3 to)
         {
             Vector3 segment = Flat(to - from);

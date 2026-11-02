@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter.States
 {
-    /// <summary>
-    /// Runs with A* to the safe zone with the shortest path, waits SafeZoneWaitTime inside it and then
-    /// hands control back. Seeing a wolf again while sheltered restarts the wait.
-    /// </summary>
     public sealed class FleeState : ActivityState
     {
         private readonly HunterController hunter;
@@ -26,7 +22,6 @@ namespace Parcial2.Hunter.States
         {
             if (!InProgress)
             {
-                // The FSM kept us here because a wolf is still in sight: flee again.
                 if (hunter.SeesWolf)
                     Begin();
                 return;
@@ -45,7 +40,6 @@ namespace Parcial2.Hunter.States
                 return;
             }
 
-            // Inside: settle towards the centre so the body is fully sheltered, and wait.
             if (!hunter.HasArrived(zone.Center))
                 hunter.MoveTo(zone.Center, hunter.FleeSpeed);
             else
@@ -72,10 +66,6 @@ namespace Parcial2.Hunter.States
                 hunter.ChooseSafeZone(zone);
         }
 
-        /// <summary>
-        /// Nearest by A* path length over the graph, not by straight-line distance. Routes that keep away
-        /// from the wolves seen recently win; a route past a wolf is used only when no other exists.
-        /// </summary>
         private ZoneVolume FindNearestSafeZone()
         {
             return FindNearestSafeZone(avoidThreats: true) ?? FindNearestSafeZone(avoidThreats: false);

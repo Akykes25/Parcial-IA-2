@@ -5,10 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter
 {
-    /// <summary>
-    /// Reads the Hunter's two vision sensors (boids and wolves) and answers the questions its states ask.
-    /// Boid components are cached per transform so no lookup runs every frame.
-    /// </summary>
     public sealed class HunterPerception
     {
         private readonly VisionSensor boidSensor;
@@ -42,7 +38,6 @@ namespace Parcial2.Hunter
             return false;
         }
 
-        /// <summary>Closest visible boid that is dead (waiting to be gathered) or alive (attackable).</summary>
         public BoidAgent FindClosestBoid(bool dead, Vector3 from)
         {
             BoidAgent closest = null;

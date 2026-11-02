@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace Parcial2.Feedback
 {
-    /// <summary>
-    /// Visual feedback for a wolf: body colour per state, a short flash when it spots the Hunter, howls or
-    /// receives an alert, the A* path in use, the last known position and a state label.
-    /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(WolfController))]
     public sealed class WolfFeedback : MonoBehaviour

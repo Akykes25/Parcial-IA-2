@@ -72,7 +72,6 @@ namespace Parcial2.Boids
                 + cohesion * cohesionWeight;
         }
 
-        // Always drawn (not only when selected): the brief asks for the boid radii to be visible.
         private void OnDrawGizmos()
         {
             Parcial2.Feedback.FeedbackGizmos.DrawCircle(transform.position, perceptionRadius,

@@ -13,11 +13,6 @@ using UnityEngine.SceneManagement;
 
 namespace Parcial2.Editor
 {
-    /// <summary>
-    /// Builds the Variant A (ring) level in its own scene. The scene starts as a copy of the Variant C scene to
-    /// reuse its agents, HUD, camera and light; only level geometry, zones, graph and patrols are regenerated,
-    /// so running the menu again rebuilds the same level.
-    /// </summary>
     public static class VariantALevelBuilder
     {
         private const string SourceScenePath = "Assets/Scenes/SampleScene.unity";
@@ -117,7 +112,6 @@ namespace Parcial2.Editor
                 VariantALayout.CameraOrthographicSize);
         }
 
-        /// <summary>Returns the named child group, created if missing and emptied otherwise.</summary>
         private static Transform CleanGroup(Transform parent, string name)
         {
             Transform group = parent.Find(name);

@@ -4,12 +4,6 @@ using UnityEngine;
 
 namespace Parcial2.Editor.Levels
 {
-    /// <summary>
-    /// Variant A ("ring"): a rectangular ring of 3 m corridors around the hunting ground. A straight east-west
-    /// axis joins Start (west, outside the ring) and Exit (east, outside the ring) through the hunting ground.
-    /// Each safe zone is a dead-end alley off that axis, away from every patrol route. A north and a south room
-    /// hang from the ring through two short corridors each. Units are metres; Vector2.y is world z.
-    /// </summary>
     internal static class VariantALayout
     {
         public const float NodeHeight = 0.5f;
@@ -87,19 +81,14 @@ namespace Parcial2.Editor.Levels
 
         public static readonly (int a, int b)[] Links =
         {
-            // East-west axis: Start -> west ring -> SW junction -> hunting ground -> NE junction -> east ring -> Exit.
             (0, 1), (1, 4), (4, 26), (26, 33), (35, 28), (28, 13), (13, 39), (39, 40),
-            // Safe-zone alleys (dead ends).
             (26, 27), (28, 29),
-            // Ring.
             (2, 3), (3, 4), (4, 5), (5, 6),
             (6, 7), (7, 8), (8, 9), (9, 10), (10, 11),
             (11, 12), (12, 13), (13, 14), (14, 15),
             (15, 16), (16, 17), (17, 18), (18, 19), (19, 2),
-            // North and south rooms with their two doors.
             (8, 20), (9, 22), (20, 21), (21, 22),
             (18, 23), (17, 25), (23, 24), (24, 25),
-            // Hunting ground mesh.
             (30, 31), (31, 32), (33, 34), (34, 35), (36, 37), (37, 38),
             (30, 33), (33, 36), (31, 34), (34, 37), (32, 35), (35, 38),
         };
@@ -110,9 +99,6 @@ namespace Parcial2.Editor.Levels
             new("Wolf L2 North Room", PatrolMode.Loop, 8, 9, 22, 21, 20),
             new("Wolf L3 East Ring", PatrolMode.PingPong, 15, 14, 13, 12, 11),
             new("Wolf L4 South Room", PatrolMode.Loop, 17, 18, 23, 24, 25),
-            // Ring sentries on the stretches no other wolf walks. They never share a corridor stretch with
-            // L2/L4: two wolves heading to the same node from opposite sides block each other in a 3 m corridor.
-            // Each turns at a room door the room wolf only passes through, and stays clear of the L1/L3 corners.
             new("Wolf L5 North Ring", PatrolMode.PingPong, 7, 8),
             new("Wolf L6 South Ring", PatrolMode.PingPong, 16, 17),
         };

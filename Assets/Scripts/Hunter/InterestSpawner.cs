@@ -5,7 +5,6 @@ using UnityEngine;
 
 namespace Parcial2.Hunter
 {
-    /// <summary>Pooled interest objects the Hunter drops inside the hunting ground while searching.</summary>
     [DisallowMultipleComponent]
     public sealed class InterestSpawner : MonoBehaviour
     {
@@ -35,7 +34,6 @@ namespace Parcial2.Hunter
             }
         }
 
-        /// <summary>Spawns one object only while fewer than <see cref="MaxActive"/> are active.</summary>
         public bool TrySpawn(ZoneVolume zone)
         {
             if (prefab == null || zone == null || ActiveCount >= maxActive)
