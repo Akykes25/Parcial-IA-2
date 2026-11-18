@@ -155,10 +155,10 @@ namespace Parcial2.Hunter
             brain.Update();
         }
 
-        public void MoveTo(Vector3 destination, float speed)
+        public void MoveTo(Vector3 destination, float speed, bool targetInSight = false)
         {
             destination.y = Position.y;
-            Navigation.SetDestination(destination);
+            Navigation.SetDestination(destination, targetInSight);
             motor.DesiredVelocity = Navigation.Tick(Position, speed, Time.time);
         }
 

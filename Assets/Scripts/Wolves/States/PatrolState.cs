@@ -25,7 +25,7 @@ namespace Parcial2.Wolves.States
             if (wolf.HasArrived(waypoint.Position))
                 waypoint = wolf.Route[cursor.Advance()];
 
-            wolf.MoveTo(waypoint.Position, wolf.PatrolSpeed);
+            wolf.MoveTo(waypoint.Position, wolf.PatrolSpeed, targetInSight: true);
         }
 
         public override void Exit() => wolf.Halt();

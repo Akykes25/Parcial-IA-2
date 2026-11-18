@@ -30,6 +30,7 @@ namespace Parcial2.Navigation
         private GraphNode unreachableGoal;
         private bool hasDestination;
         private bool directRoute;
+        private bool directRouteAllowed;
         private float nextClearanceCheck;
         private Vector3 progressPosition;
         private float progressTime;
@@ -62,12 +63,18 @@ namespace Parcial2.Navigation
 
         public event Action<IReadOnlyList<GraphNode>> PathCalculated;
 
-        public void SetDestination(Vector3 target)
+        public void SetDestination(Vector3 target, bool allowDirectRoute = false)
         {
             if (!hasDestination || (target - destination).sqrMagnitude > DestinationMovedSqr)
             {
                 nextClearanceCheck = float.MinValue;
                 progressTime = float.MaxValue;
+            }
+
+            if (allowDirectRoute != directRouteAllowed)
+            {
+                directRouteAllowed = allowDirectRoute;
+                nextClearanceCheck = float.MinValue;
             }
 
             destination = target;
@@ -95,7 +102,8 @@ namespace Parcial2.Navigation
             if (time >= nextClearanceCheck)
             {
                 nextClearanceCheck = time + clearanceCheckInterval;
-                directRoute = time >= directRouteBlockedUntil && HasClearRoute(position, destination)
+                directRoute = directRouteAllowed && time >= directRouteBlockedUntil
+                    && HasClearRoute(position, destination)
                     && (Threats == null || Threats.IsSegmentClear(position, destination));
                 if (directRoute)
                     ClearPath();

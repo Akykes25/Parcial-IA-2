@@ -13,6 +13,6 @@ namespace Parcial2.Wolves.States
 
         public override void Enter() => wolf.Howl();
 
-        public override void Update() => wolf.MoveTo(wolf.LastKnownPosition, wolf.ChaseSpeed);
+        public override void Update() => wolf.MoveTo(wolf.LastKnownPosition, wolf.ChaseSpeed, targetInSight: true);
     }
 }

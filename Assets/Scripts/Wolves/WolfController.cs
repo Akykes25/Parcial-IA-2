@@ -123,10 +123,10 @@ namespace Parcial2.Wolves
             TryCapture();
         }
 
-        public void MoveTo(Vector3 destination, float speed)
+        public void MoveTo(Vector3 destination, float speed, bool targetInSight = false)
         {
             destination.y = Position.y;
-            Navigation.SetDestination(destination);
+            Navigation.SetDestination(destination, targetInSight);
             Vector3 velocity = Navigation.Tick(Position, speed, Time.time);
 
             if (velocity.sqrMagnitude > 0.0001f

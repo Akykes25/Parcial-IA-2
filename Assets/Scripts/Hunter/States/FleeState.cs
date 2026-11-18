@@ -68,11 +68,6 @@ namespace Parcial2.Hunter.States
 
         private ZoneVolume FindNearestSafeZone()
         {
-            return FindNearestSafeZone(avoidThreats: true) ?? FindNearestSafeZone(avoidThreats: false);
-        }
-
-        private ZoneVolume FindNearestSafeZone(bool avoidThreats)
-        {
             ZoneVolume best = null;
             float bestCost = float.MaxValue;
 
@@ -84,7 +79,7 @@ namespace Parcial2.Hunter.States
                 if (candidate.Contains(hunter.Position))
                     return candidate;
 
-                if (hunter.Navigation.TryGetPathCost(hunter.Position, candidate.Center, out float cost, avoidThreats)
+                if (hunter.Navigation.TryGetPathCost(hunter.Position, candidate.Center, out float cost)
                     && cost < bestCost)
                 {
                     bestCost = cost;

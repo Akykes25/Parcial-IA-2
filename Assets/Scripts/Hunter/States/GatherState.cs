@@ -40,7 +40,7 @@ namespace Parcial2.Hunter.States
             if (offset.sqrMagnitude > hunter.GatherReachDistance * hunter.GatherReachDistance)
             {
                 elapsed = 0f;
-                hunter.MoveTo(target.transform.position, hunter.GatherSpeed);
+                hunter.MoveTo(target.transform.position, hunter.GatherSpeed, targetInSight: true);
                 return;
             }
 
