@@ -9,7 +9,8 @@ namespace Parcial2.Navigation
         private struct OpenEntry
         {
             public GraphNode Node;
-            public float Cost;
+            public float G;
+            public float F;
         }
 
         private readonly List<OpenEntry> open = new();
@@ -46,14 +47,14 @@ namespace Parcial2.Navigation
             cameFrom.Clear();
 
             gScore[start] = 0f;
-            Push(start, 0f);
+            Push(start, 0f, Heuristic(start, goal));
 
             while (open.Count > 0)
             {
                 OpenEntry current = Pop();
                 float currentG = gScore[current.Node];
 
-                if (current.Cost > currentG)
+                if (current.G > currentG)
                     continue;
 
                 if (current.Node == goal)
@@ -63,13 +64,18 @@ namespace Parcial2.Navigation
                     return true;
                 }
 
-                Expand(current.Node, currentG, filter, edgeFilter);
+                Expand(current.Node, currentG, goal, filter, edgeFilter);
             }
 
             return false;
         }
 
-        private void Expand(GraphNode node, float nodeG, Predicate<GraphNode> filter,
+        private static float Heuristic(GraphNode node, GraphNode goal)
+        {
+            return Vector3.Distance(node.Position, goal.Position);
+        }
+
+        private void Expand(GraphNode node, float nodeG, GraphNode goal, Predicate<GraphNode> filter,
             Func<GraphNode, GraphNode, bool> edgeFilter)
         {
             foreach (GraphNode neighbor in node.Neighbors)
@@ -84,7 +90,7 @@ namespace Parcial2.Navigation
 
                 gScore[neighbor] = tentative;
                 cameFrom[neighbor] = node;
-                Push(neighbor, tentative);
+                Push(neighbor, tentative, tentative + Heuristic(neighbor, goal));
             }
         }
 
@@ -101,14 +107,14 @@ namespace Parcial2.Navigation
             result.Reverse();
         }
 
-        private void Push(GraphNode node, float cost)
+        private void Push(GraphNode node, float g, float f)
         {
-            open.Add(new OpenEntry { Node = node, Cost = cost });
+            open.Add(new OpenEntry { Node = node, G = g, F = f });
             int child = open.Count - 1;
             while (child > 0)
             {
                 int parent = (child - 1) / 2;
-                if (open[parent].Cost <= open[child].Cost)
+                if (open[parent].F <= open[child].F)
                     break;
 
                 (open[parent], open[child]) = (open[child], open[parent]);
@@ -130,9 +136,9 @@ namespace Parcial2.Navigation
                 int right = left + 1;
                 int smallest = parent;
 
-                if (left < open.Count && open[left].Cost < open[smallest].Cost)
+                if (left < open.Count && open[left].F < open[smallest].F)
                     smallest = left;
-                if (right < open.Count && open[right].Cost < open[smallest].Cost)
+                if (right < open.Count && open[right].F < open[smallest].F)
                     smallest = right;
                 if (smallest == parent)
                     break;
